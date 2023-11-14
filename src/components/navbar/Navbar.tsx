@@ -1,11 +1,32 @@
-import { Box, Button, Container, Flex, Link } from '@chakra-ui/react';
-import { FC } from 'react';
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  Flex,
+  Link,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  useBoolean,
+  useDisclosure,
+} from '@chakra-ui/react';
+import React from 'react';
 import { MdLogin } from 'react-icons/md';
+import {
+  LoginForm,
+  RegisterForm,
+} from '../../features/authentication/component';
 import Logo from './Logo';
 
 interface NavbarProps {}
 
-const Navbar: FC<NavbarProps> = () => {
+const Navbar: React.FC<NavbarProps> = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [toggleDaftar, setToggleDaftar] = useBoolean();
+
   return (
     <Box bg="white" w="100%" p="5">
       <Container
@@ -43,11 +64,28 @@ const Navbar: FC<NavbarProps> = () => {
             variant="outline"
             colorScheme="blue"
             leftIcon={<MdLogin />}
+            onClick={onOpen}
           >
             Masuk/Daftar
           </Button>
         </Flex>
       </Container>
+      <Modal isOpen={isOpen} onClose={onClose} size="lg">
+        <ModalOverlay />
+        <ModalContent padding="8" borderRadius="2xl">
+          <ModalHeader display="grid" placeContent="center">
+            <Logo />
+          </ModalHeader>
+          <ModalBody>
+            <Divider mt="2" mb="6" />
+            {toggleDaftar ? (
+              <RegisterForm onOpenRegister={setToggleDaftar.toggle} />
+            ) : (
+              <LoginForm onOpenLogin={setToggleDaftar.toggle} />
+            )}
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };
