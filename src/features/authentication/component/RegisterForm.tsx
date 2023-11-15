@@ -19,6 +19,7 @@ import { FC } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md';
 import { RiErrorWarningFill } from 'react-icons/ri';
+import useRegister from '../hooks/useRegister';
 
 interface RegisterFormProps {
   onOpenRegister?: () => void;
@@ -27,6 +28,9 @@ interface RegisterFormProps {
 const RegisterForm: FC<RegisterFormProps> = ({ onOpenRegister }) => {
   const [visiblePassword, setVisiblePassword] = useBoolean();
   const [visiblePasswordConfirm, setVisiblePasswordConfirm] = useBoolean();
+
+  const { errors, handleSubmit, isSubmitting, onSubmit, register } =
+    useRegister();
 
   return (
     <>
@@ -38,10 +42,25 @@ const RegisterForm: FC<RegisterFormProps> = ({ onOpenRegister }) => {
           Masuk
         </Button>
       </HStack>
-      <VStack as="form" gap="5" alignItems="flex-start">
+      <VStack
+        as="form"
+        gap="5"
+        alignItems="flex-start"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <VStack gap="4" width="full">
-          <FormControl isInvalid={false}>
-            <Input placeholder="Nama Lengkap" size="lg" type="text" />
+          <FormControl isInvalid={errors.name !== undefined}>
+            <Input
+              placeholder="Nama Lengkap"
+              size="lg"
+              type="text"
+              {...register('name', {
+                required: {
+                  value: true,
+                  message: 'Mohon masukan nama pengguna',
+                },
+              })}
+            />
             <FormErrorMessage
               bg="red.100"
               color="black"
@@ -50,18 +69,44 @@ const RegisterForm: FC<RegisterFormProps> = ({ onOpenRegister }) => {
               fontWeight="medium"
             >
               <Icon as={RiErrorWarningFill} mr="2" color="red.500" />
-              Email is required.
+              {errors.name?.message}
             </FormErrorMessage>
           </FormControl>
-          <FormControl isInvalid={false}>
-            <Input placeholder="Email" type="email" size="lg" />
+          <FormControl isInvalid={errors.email !== undefined}>
+            <Input
+              placeholder="Email"
+              type="email"
+              size="lg"
+              {...register('email', {
+                required: {
+                  value: true,
+                  message: 'Mohon masukan email pengguna',
+                },
+              })}
+            />
+            <FormErrorMessage
+              bg="red.100"
+              color="black"
+              padding="4"
+              rounded="lg"
+              fontWeight="medium"
+            >
+              <Icon as={RiErrorWarningFill} mr="2" color="red.500" />
+              {errors.email?.message}
+            </FormErrorMessage>
           </FormControl>
-          <FormControl>
+          <FormControl isInvalid={errors.password !== undefined}>
             <InputGroup size="lg">
               <Input
                 placeholder="Kata sandi"
                 type={visiblePassword ? 'text' : 'password'}
                 size="lg"
+                {...register('password', {
+                  required: {
+                    value: true,
+                    message: 'Mohon masukan kata sandi pengguna',
+                  },
+                })}
               />
               <InputRightElement>
                 <IconButton
@@ -75,13 +120,29 @@ const RegisterForm: FC<RegisterFormProps> = ({ onOpenRegister }) => {
                 />
               </InputRightElement>
             </InputGroup>
+            <FormErrorMessage
+              bg="red.100"
+              color="black"
+              padding="4"
+              rounded="lg"
+              fontWeight="medium"
+            >
+              <Icon as={RiErrorWarningFill} mr="2" color="red.500" />
+              {errors.password?.message}
+            </FormErrorMessage>
           </FormControl>
-          <FormControl>
+          <FormControl isInvalid={errors.confirmPassword !== undefined}>
             <InputGroup size="lg">
               <Input
                 placeholder="Konfirmasi Kata Password"
                 type={visiblePasswordConfirm ? 'text' : 'password'}
                 size="lg"
+                {...register('confirmPassword', {
+                  required: {
+                    value: true,
+                    message: 'Mohon masukan konfirmasi kata sandi pengguna',
+                  },
+                })}
               />
               <InputRightElement>
                 <IconButton
@@ -99,6 +160,16 @@ const RegisterForm: FC<RegisterFormProps> = ({ onOpenRegister }) => {
                 />
               </InputRightElement>
             </InputGroup>
+            <FormErrorMessage
+              bg="red.100"
+              color="black"
+              padding="4"
+              rounded="lg"
+              fontWeight="medium"
+            >
+              <Icon as={RiErrorWarningFill} mr="2" color="red.500" />
+              {errors.confirmPassword?.message}
+            </FormErrorMessage>
           </FormControl>
         </VStack>
         <Button
@@ -109,6 +180,8 @@ const RegisterForm: FC<RegisterFormProps> = ({ onOpenRegister }) => {
           color="white"
           size="lg"
           width="full"
+          type="submit"
+          isLoading={isSubmitting}
         >
           Daftar
         </Button>

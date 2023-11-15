@@ -20,6 +20,7 @@ import { FC, useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md';
 import { RiErrorWarningFill } from 'react-icons/ri';
+import useLogin from '../hooks/useLogin';
 
 interface LoginFormProps {
   onOpenLogin?: () => void;
@@ -28,6 +29,9 @@ interface LoginFormProps {
 const LoginForm: FC<LoginFormProps> = ({ onOpenLogin }) => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
+
+  const { errors, handleSubmit, isSubmitting, register, onSubmit } = useLogin();
+
   return (
     <>
       <HStack justifyContent="space-between" mb="6">
@@ -38,10 +42,21 @@ const LoginForm: FC<LoginFormProps> = ({ onOpenLogin }) => {
           Daftar
         </Button>
       </HStack>
-      <VStack as="form" gap="5" alignItems="flex-start">
+      <VStack
+        as="form"
+        gap="5"
+        alignItems="flex-start"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <VStack gap="4" width="full">
-          <FormControl isInvalid={true}>
-            <Input placeholder="Email" size="lg" />
+          <FormControl isInvalid={errors.email !== undefined}>
+            <Input
+              placeholder="Email"
+              size="lg"
+              {...register('email', {
+                required: { value: true, message: 'Email harus di isi' },
+              })}
+            />
             <FormErrorMessage
               bg="red.100"
               color="black"
@@ -50,15 +65,21 @@ const LoginForm: FC<LoginFormProps> = ({ onOpenLogin }) => {
               fontWeight="medium"
             >
               <Icon as={RiErrorWarningFill} mr="2" color="red.500" />
-              Email is required.
+              {errors.email?.message}
             </FormErrorMessage>
           </FormControl>
-          <FormControl>
+          <FormControl isInvalid={errors.password !== undefined}>
             <InputGroup size="lg">
               <Input
                 placeholder="Password"
                 type={show ? 'text' : 'password'}
                 size="lg"
+                {...register('password', {
+                  required: {
+                    value: true,
+                    message: 'Password harus di isi',
+                  },
+                })}
               />
               <InputRightElement>
                 <IconButton
@@ -70,6 +91,16 @@ const LoginForm: FC<LoginFormProps> = ({ onOpenLogin }) => {
                 />
               </InputRightElement>
             </InputGroup>
+            <FormErrorMessage
+              bg="red.100"
+              color="black"
+              padding="4"
+              rounded="lg"
+              fontWeight="medium"
+            >
+              <Icon as={RiErrorWarningFill} mr="2" color="red.500" />
+              {errors.password?.message}
+            </FormErrorMessage>
           </FormControl>
         </VStack>
         <Text>
@@ -83,6 +114,8 @@ const LoginForm: FC<LoginFormProps> = ({ onOpenLogin }) => {
           color="white"
           size="lg"
           width="full"
+          type="submit"
+          isLoading={isSubmitting}
         >
           Login
         </Button>
