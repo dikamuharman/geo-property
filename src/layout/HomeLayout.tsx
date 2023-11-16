@@ -9,7 +9,7 @@ const HomeLayout: FC<HomeLayoutProps> = () => {
   return (
     <Box bg="blue.600" w="100%" h="100vh">
       <Navbar />
-      <Container maxW="full" h="100%" p="10">
+      <Container maxW="full" h="full" maxH="calc(100vh - 88px)" p="10">
         <Outlet />
       </Container>
     </Box>
