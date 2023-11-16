@@ -29,11 +29,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 
   return (
     <Box bg="white" w="100%" p="5">
-      <Container
-        maxW="container.xl"
-        display="flex"
-        justifyContent="space-between"
-      >
+      <Container maxW="full" display="flex" justifyContent="space-between">
         <Flex gap="16" alignItems="center">
           <Logo />
           <Flex gap="8">
