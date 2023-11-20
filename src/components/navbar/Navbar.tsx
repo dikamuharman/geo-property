@@ -28,7 +28,15 @@ const Navbar: React.FC<NavbarProps> = () => {
   const [toggleDaftar, setToggleDaftar] = useBoolean();
 
   return (
-    <Box bg="white" w="100%" p="5" as="nav" shadow="base">
+    <Box
+      bg="white"
+      w="100%"
+      p="5"
+      as="nav"
+      borderBottomWidth={2}
+      borderBottomStyle="solid"
+      borderBottomColor="gray.100"
+    >
       <Container maxW="full" display="flex" justifyContent="space-between">
         <Flex gap="16" alignItems="center">
           <Logo />

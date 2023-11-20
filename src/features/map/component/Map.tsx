@@ -16,6 +16,7 @@ const Map: FC<MapProps> = () => {
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
+    console.log('render map once');
     map.current = new mapboxgl.Map({
       container: mapContainer.current!,
       style: 'mapbox://styles/mapbox/streets-v12',
