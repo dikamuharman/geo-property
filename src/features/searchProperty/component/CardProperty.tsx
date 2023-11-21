@@ -20,8 +20,7 @@ const CardProperty: FC<CardPropertyProps> = () => {
       bg="white"
       shadow="md"
       borderRadius={8}
-      minH={450}
-      maxH={500}
+      h={575}
       overflow="hidden"
     >
       <Image src="https://placehold.co/550x350" alt="property" />
@@ -57,12 +56,22 @@ const CardProperty: FC<CardPropertyProps> = () => {
           </Text>
         </VStack>
         <HStack>
-          <Box>
+          <HStack>
             <Icon as={FaBath} color="blue.500" />
-          </Box>
-          <Box>
+            <Text>2</Text>
+          </HStack>
+          <HStack>
             <Icon as={IoBed} color="blue.500" />
-          </Box>
+            <Text>2</Text>
+          </HStack>
+          <HStack>
+            <Text color="blue.500">LT</Text>
+            <Text>144 M²</Text>
+          </HStack>
+          <HStack>
+            <Text color="blue.500">LB</Text>
+            <Text>144 M²</Text>
+          </HStack>
         </HStack>
       </VStack>
     </Box>
