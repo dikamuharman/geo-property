@@ -40,7 +40,7 @@ const Map: FC<MapProps> = () => {
     [lat, lng, zoom]
   );
 
-  return <Box ref={mapWrapper} h="full" />;
+  return <Box ref={mapWrapper} h="full" w="full" />;
 };
 
 export default Map;
