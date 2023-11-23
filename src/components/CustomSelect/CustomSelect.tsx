@@ -1,6 +1,7 @@
 import { Icon, Text } from '@chakra-ui/react';
 import { Select, chakraComponents } from 'chakra-react-select';
 import { FC } from 'react';
+import { IconType } from 'react-icons';
 import { FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
 
 interface CustomSelectProps {
@@ -13,14 +14,15 @@ interface CustomSelectProps {
   isClearable?: boolean;
   value?: string;
   name?: string;
+  optionsIcon?: IconType;
 }
 
 const CustomSelect: FC<CustomSelectProps> = ({
   options,
   onChange,
   placeholder,
-
   name,
+  optionsIcon = FaMapMarkerAlt,
 }) => {
   return (
     <Select
@@ -57,7 +59,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
       components={{
         Option: ({ children, ...props }) => (
           <chakraComponents.Option {...props}>
-            <Icon as={FaMapMarkerAlt} boxSize={4} color="gray.500" mr="10px" />
+            <Icon as={optionsIcon} boxSize={4} color="gray.500" mr="10px" />
             <Text>{children}</Text>
           </chakraComponents.Option>
         ),
