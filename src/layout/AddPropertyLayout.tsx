@@ -121,6 +121,7 @@ const AddPropertyLayout: FC<AddPropertyLayoutProps> = () => {
                     color: 'white',
                     _hover: { backgroundColor: blue600 },
                   }}
+                  end
                 >
                   <Text textTransform="capitalize">{label}</Text>
                   <Icon as={icon} w={6} h={6} ml="auto" />

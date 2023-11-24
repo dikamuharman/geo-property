@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import AddPropertyLayout from '../../layout/AddPropertyLayout';
 import HomeLayout from '../../layout/HomeLayout';
 import SearchLayout from '../../layout/SearchLayout';
+import AboutAddPropertyPage from '../../pages/AboutAddPropertyPage';
 import AddPropertyPage from '../../pages/AddPropertyPage';
 import DetailPage from '../../pages/DetailPage';
 import HomePage from '../../pages/HomePage';
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <AddPropertyPage />,
+      },
+      {
+        path: 'about-property',
+        element: <AboutAddPropertyPage />,
       },
     ],
   },
