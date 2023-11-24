@@ -31,6 +31,7 @@ const CustomTextArea: FC<CustomTextAreaProps> = ({
         onChange={(e) => {
           e.target.value && onChange && onChange(e.target.value);
         }}
+        rows={5}
       />
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
       {isInvalid && <FormErrorMessage>{errorMessage}</FormErrorMessage>}
