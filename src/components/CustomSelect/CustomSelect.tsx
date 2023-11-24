@@ -2,9 +2,9 @@ import { Icon, Text } from '@chakra-ui/react';
 import { Select, chakraComponents } from 'chakra-react-select';
 import { FC } from 'react';
 import { IconType } from 'react-icons';
-import { FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
+import { FaChevronDown } from 'react-icons/fa';
 
-interface CustomSelectProps {
+export interface CustomSelectProps {
   options: {
     label: string;
     value: string;
@@ -15,6 +15,7 @@ interface CustomSelectProps {
   value?: string;
   name?: string;
   optionsIcon?: IconType;
+  dropdownIndicator?: IconType;
 }
 
 const CustomSelect: FC<CustomSelectProps> = ({
@@ -22,7 +23,8 @@ const CustomSelect: FC<CustomSelectProps> = ({
   onChange,
   placeholder,
   name,
-  optionsIcon = FaMapMarkerAlt,
+  optionsIcon,
+  dropdownIndicator = FaChevronDown,
 }) => {
   return (
     <Select
@@ -59,13 +61,15 @@ const CustomSelect: FC<CustomSelectProps> = ({
       components={{
         Option: ({ children, ...props }) => (
           <chakraComponents.Option {...props}>
-            <Icon as={optionsIcon} boxSize={4} color="gray.500" mr="10px" />
+            {optionsIcon && (
+              <Icon as={optionsIcon} boxSize={4} color="gray.500" mr="10px" />
+            )}
             <Text>{children}</Text>
           </chakraComponents.Option>
         ),
         DropdownIndicator: ({ children, ...props }) => (
           <chakraComponents.DropdownIndicator {...props}>
-            <Icon as={FaSearch} boxSize={4} color="blue.500" />
+            <Icon as={dropdownIndicator} boxSize={4} color="blue.500" />
             {children}
           </chakraComponents.DropdownIndicator>
         ),

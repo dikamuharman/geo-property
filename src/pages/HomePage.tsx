@@ -8,6 +8,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { FC } from 'react';
+import { FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
 import CustomSelect from '../components/CustomSelect/CustomSelect';
 
 interface HomePageProps {}
@@ -44,6 +45,8 @@ const HomePage: FC<HomePageProps> = () => {
                 console.log(value);
               }}
               isClearable
+              optionsIcon={FaMapMarkerAlt}
+              dropdownIndicator={FaSearch}
             />
 
             <Button colorScheme="blue" size="lg">
