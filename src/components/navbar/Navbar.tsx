@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { MdLogin } from 'react-icons/md';
+import { NavLink } from 'react-router-dom';
 import {
   LoginForm,
   RegisterForm,
@@ -54,6 +55,8 @@ const Navbar: React.FC<NavbarProps> = () => {
         </Flex>
         <Flex gap="2">
           <Button
+            as={NavLink}
+            to="/add-property"
             bgGradient="linear(to-r, blue.500, blue.600)"
             _hover={{
               bgGradient: 'linear(to-r, blue.600, blue.700)',

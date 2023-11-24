@@ -9,7 +9,7 @@ interface CustomSelectProps {
     label: string;
     value: string;
   }[];
-  onChange: (value: string | undefined) => void;
+  onChange?: (value: string | undefined) => void;
   placeholder?: string;
   isClearable?: boolean;
   value?: string;
@@ -28,7 +28,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
     <Select
       size="lg"
       placeholder={placeholder}
-      onChange={(valueOption) => onChange(valueOption?.value)}
+      onChange={(valueOption) => onChange && onChange(valueOption?.value)}
       options={options}
       name={name}
       isClearable
