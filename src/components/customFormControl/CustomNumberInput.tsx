@@ -33,6 +33,10 @@ const CustomNumberInput: React.FC<CustomNumberInputProps> = ({
 }) => {
   const [number, setNumber] = React.useState<number>(value);
 
+  React.useEffect(() => {
+    onChange && onChange(number.toString());
+  }, [number, onChange]);
+
   return (
     <FormControl isInvalid={isInvalid}>
       <FormLabel>{label}</FormLabel>
@@ -58,12 +62,9 @@ const CustomNumberInput: React.FC<CustomNumberInputProps> = ({
         <Input
           name={name}
           value={number}
+          readOnly
           placeholder={placeholder}
-          disabled
           _disabled={{ borderColor: 'gray.200', cursor: 'not-allowed' }}
-          onChange={(e) => {
-            onChange && onChange(e.target.value);
-          }}
         />
         <InputRightElement>
           <IconButton
