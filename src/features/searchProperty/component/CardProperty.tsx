@@ -20,7 +20,7 @@ const CardProperty: FC<CardPropertyProps> = () => {
       bg="white"
       shadow="md"
       borderRadius={8}
-      h={575}
+      h={'53vh'}
       overflow="hidden"
     >
       <Image src="https://placehold.co/550x350" alt="property" />

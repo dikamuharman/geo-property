@@ -4,6 +4,7 @@ import HomeLayout from '../../layout/HomeLayout';
 import SearchLayout from '../../layout/SearchLayout';
 import AboutAddPropertyPage from '../../pages/AboutAddPropertyPage';
 import AddPropertyPage from '../../pages/AddPropertyPage';
+import DetailAddPropertyPage from '../../pages/DetailAddPropertyPage';
 import DetailPage from '../../pages/DetailPage';
 import HomePage from '../../pages/HomePage';
 import SearchPage from '../../pages/SearchPage';
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: 'about-property',
         element: <AboutAddPropertyPage />,
+      },
+      {
+        path: 'detail-property',
+        element: <DetailAddPropertyPage />,
       },
     ],
   },

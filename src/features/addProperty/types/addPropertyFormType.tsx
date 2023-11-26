@@ -5,3 +5,47 @@ export type TAddAboutPropertyForm = {
   tipeProperti: string;
   deskirpsi: string;
 };
+
+export type TBaseProperty = {
+  luasBangunan: string;
+  kamarMandi: string;
+  kamarTidur: string;
+  jumlahLantai: string;
+  lahanParkir: string;
+  tipeParabot: string;
+  dayaListrik: string;
+  fasilitasProperty: string[];
+  fasilitaLuarProperty: string[];
+};
+
+export type TPropertyJualRumah = TBaseProperty & {
+  hargaJual: string;
+  tipeRumah: string;
+  luasTanah: string;
+  orientasiBangunan: string;
+  tipeSertifikat: string;
+};
+
+export type TPropertySewaRumah = TBaseProperty & {
+  hargaSewa: string;
+  tipeRumah: string;
+  tipeSewa: string;
+  luasTanah: string;
+  orientasiBangunan: string;
+};
+
+export type TPropertyJualApartement = TBaseProperty & {
+  hargaJual: string;
+  tipeApartement: string;
+  tipeSertifikat: string;
+};
+
+export type TPropertySewaApartement = TBaseProperty & {
+  hargaSewa: string;
+  tipeApartement: string;
+};
+
+export type TAddPropertyForm = TPropertySewaRumah &
+  TPropertyJualRumah &
+  TPropertySewaApartement &
+  TPropertyJualApartement;
