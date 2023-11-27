@@ -1,5 +1,7 @@
+import { ReactNode } from 'react';
+
 export type TBaseCustomInputType = {
-  label: string;
+  label: string | ReactNode;
   onChange?: (value: string) => void;
   value?: string;
   placeholder?: string;
