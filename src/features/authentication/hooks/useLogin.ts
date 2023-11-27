@@ -1,7 +1,31 @@
+import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import { ILoginUser } from '../type/user-type';
+import decodeJwt from '../../../lib/decodeJwt';
+import authService from '../services/authService';
+import useUserStore from '../store/useUserStore';
+import { ILoginUser, UserInformation } from '../type/user-type';
 
 const useLogin = () => {
+  const setLogin = useUserStore((state) => state.setLogin);
+
+  const loginMutation = useMutation({
+    mutationFn: ({ email, password }: ILoginUser) =>
+      authService.login({ email, password }),
+    onSuccess: ({ data }) => {
+      const decodedJwt = decodeJwt<UserInformation>(data?.token || '');
+      setLogin({
+        refresh_token: data?.refresh_token || '',
+        token: data?.token || '',
+        user: {
+          email: decodedJwt?.email || '',
+          exp: decodedJwt?.exp || 0,
+          id: decodedJwt?.id || 0,
+          name: decodedJwt?.name || '',
+        },
+      });
+    },
+  });
+
   const {
     handleSubmit,
     register,
@@ -14,7 +38,7 @@ const useLogin = () => {
   });
 
   const onSubmit = (value: ILoginUser) => {
-    console.log(value);
+    loginMutation.mutate({ email: value.email, password: value.password });
   };
 
   return {

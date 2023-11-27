@@ -1,10 +1,18 @@
 import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
   Box,
   Button,
+  CloseButton,
   Container,
   Divider,
   Flex,
   Link,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Modal,
   ModalBody,
   ModalContent,
@@ -14,20 +22,50 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import React from 'react';
+import { FaChevronDown } from 'react-icons/fa';
 import { MdLogin } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 import {
   LoginForm,
   RegisterForm,
 } from '../../features/authentication/component';
+import useRegisterStateStore from '../../features/authentication/store/useRegisterStateStore';
+import useUserStore from '../../features/authentication/store/useUserStore';
 import Logo from './Logo';
 
 interface NavbarProps {}
 
 const Navbar: React.FC<NavbarProps> = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [hasRegister, setRegsiter] = useRegisterStateStore((state) => [
+    state.hasRegister,
+    state.setRegister,
+  ]);
+  const [hasLogin, username, setLogout] = useUserStore((state) => [
+    state.hasLogin,
+    state.user.name,
+    state.setLogout,
+  ]);
+
+  const { onOpen, onClose, isOpen } = useDisclosure();
   const [toggleDaftar, setToggleDaftar] = useBoolean();
 
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      if (hasRegister) {
+        setRegsiter(false);
+      }
+    }, 5000);
+
+    if (hasRegister) {
+      setToggleDaftar.toggle();
+    }
+
+    if (hasLogin) {
+      onClose();
+    }
+
+    return () => clearTimeout(timer);
+  }, [hasRegister, hasLogin]);
   return (
     <Box
       bg="white"
@@ -66,15 +104,33 @@ const Navbar: React.FC<NavbarProps> = () => {
           >
             Iklankan Properti
           </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            colorScheme="blue"
-            leftIcon={<MdLogin />}
-            onClick={onOpen}
-          >
-            Masuk/Daftar
-          </Button>
+          {hasLogin ? (
+            <Menu>
+              <MenuButton
+                as={Button}
+                rightIcon={<FaChevronDown />}
+                variant="outline"
+                colorScheme="blue"
+                size="lg"
+              >
+                {username}
+              </MenuButton>
+              <MenuList>
+                <MenuItem>Informasi Akun</MenuItem>
+                <MenuItem onClick={setLogout}>Logout</MenuItem>
+              </MenuList>
+            </Menu>
+          ) : (
+            <Button
+              size="lg"
+              variant="outline"
+              colorScheme="blue"
+              leftIcon={<MdLogin />}
+              onClick={onOpen}
+            >
+              Masuk/Daftar
+            </Button>
+          )}
         </Flex>
       </Container>
       <Modal isOpen={isOpen} onClose={onClose} size="lg">
@@ -85,6 +141,19 @@ const Navbar: React.FC<NavbarProps> = () => {
           </ModalHeader>
           <ModalBody>
             <Divider mt="2" mb="6" />
+            {hasRegister ? (
+              <Alert status="success" mb={4} rounded="lg" position="relative">
+                <AlertIcon />
+                <AlertDescription>Register berhasil</AlertDescription>
+                <CloseButton
+                  position="absolute"
+                  right={1}
+                  top={1}
+                  onClick={() => setRegsiter(false)}
+                />
+              </Alert>
+            ) : null}
+
             {toggleDaftar ? (
               <RegisterForm onOpenRegister={setToggleDaftar.toggle} />
             ) : (
