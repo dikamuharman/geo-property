@@ -3,6 +3,7 @@ import AddPropertyLayout from '../../layout/AddPropertyLayout';
 import HomeLayout from '../../layout/HomeLayout';
 import SearchLayout from '../../layout/SearchLayout';
 import AboutAddPropertyPage from '../../pages/AboutAddPropertyPage';
+import AddContactProperty from '../../pages/AddContactPropertyPage';
 import AddPropertyPage from '../../pages/AddPropertyPage';
 import DetailAddPropertyPage from '../../pages/DetailAddPropertyPage';
 import DetailPage from '../../pages/DetailPage';
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
       {
         path: 'detail-property',
         element: <DetailAddPropertyPage />,
+      },
+      {
+        path: 'contact-property',
+        element: <AddContactProperty />,
       },
     ],
   },

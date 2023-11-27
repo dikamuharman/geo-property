@@ -49,3 +49,9 @@ export type TAddPropertyForm = TPropertySewaRumah &
   TPropertyJualRumah &
   TPropertySewaApartement &
   TPropertyJualApartement;
+
+export type TAddContactPropertyForm = {
+  nama: string;
+  email: string;
+  nomorHp: string;
+};
