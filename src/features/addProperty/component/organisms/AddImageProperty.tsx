@@ -23,24 +23,31 @@ import {
   FaTrash,
 } from 'react-icons/fa';
 import { IoClose } from 'react-icons/io5';
+import usePhotoStore from '../../store/usePhotosStore';
 
 interface AddImagePropertyProps {}
 
 const AddImageProperty: React.FC<AddImagePropertyProps> = () => {
-  const [images, setImages] = React.useState<File[]>([]);
+  const [images, setImages, removePhoto, resetPhoto] = usePhotoStore(
+    (state) => [
+      state.photos,
+      state.addPhotos,
+      state.removePhoto,
+      state.resetPhotos,
+    ]
+  );
+  // const [images, setImages] = React.useState<File[]>([]);
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles) => {
-      setImages((prev) => [...prev, ...acceptedFiles]);
+      setImages(acceptedFiles);
     },
   });
   const removeFile = (file: File) => () => {
-    const newFiles = [...images];
-    newFiles.splice(newFiles.indexOf(file), 1);
-    setImages(newFiles);
+    removePhoto(file);
   };
 
   const removeAll = () => {
-    setImages([]);
+    resetPhoto();
   };
 
   const [gray900] = useToken('colors', ['gray.900']);
