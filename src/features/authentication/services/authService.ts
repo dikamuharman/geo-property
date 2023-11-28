@@ -1,6 +1,6 @@
-import { AxiosInstance } from 'axios';
-import axiosIntance from '../../../lib/axios';
-import { ILoginResponse } from '../type/user-type';
+import { AxiosInstance } from "axios";
+import axiosIntance from "../../../lib/axios";
+import { ILoginResponse } from "../type/user-type";
 
 type TLoginParams = {
   email: string;
@@ -22,7 +22,7 @@ class AuthService {
     password,
   }: TLoginParams): Promise<ILoginResponse> {
     const reesponse = await this.axiosIntance.post<ILoginResponse>(
-      'auth/login',
+      "auth/login",
       {
         email,
         password,
@@ -36,17 +36,11 @@ class AuthService {
     password,
     name,
   }: TRegisterParams): Promise<ILoginResponse> {
-    return this.axiosIntance.post('/auth/register', {
+    return this.axiosIntance.post("/auth/register", {
       email,
       password,
       name,
     });
-  }
-  logout() {
-    return this.axiosIntance.post('/auth/logout');
-  }
-  me() {
-    return this.axiosIntance.get('/auth/me');
   }
 }
 
