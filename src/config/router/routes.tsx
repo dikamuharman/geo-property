@@ -1,4 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
+import AccountLayout from '../../layout/AccountLayout';
 import AddPropertyLayout from '../../layout/AddPropertyLayout';
 import HomeLayout from '../../layout/HomeLayout';
 import SearchLayout from '../../layout/SearchLayout';
@@ -9,6 +10,7 @@ import AddPropertyPage from '../../pages/AddPropertyPage';
 import DetailAddPropertyPage from '../../pages/DetailAddPropertyPage';
 import DetailPage from '../../pages/DetailPage';
 import HomePage from '../../pages/HomePage';
+import ListAdsUserPropertyPage from '../../pages/ListAdsUserPropertyPage';
 import SearchPage from '../../pages/SearchPage';
 
 const router = createBrowserRouter([
@@ -59,6 +61,16 @@ const router = createBrowserRouter([
       {
         path: 'image-property',
         element: <AddImagePropertyPage />,
+      },
+    ],
+  },
+  {
+    path: '/account',
+    element: <AccountLayout />,
+    children: [
+      {
+        path: 'list-ads',
+        element: <ListAdsUserPropertyPage />,
       },
     ],
   },
