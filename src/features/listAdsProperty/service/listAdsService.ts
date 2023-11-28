@@ -12,7 +12,7 @@ class ListAddsService {
     this.axiosIntance = axiosIntance;
   }
   public async listAdds(): Promise<IPropertyListResponse> {
-    const response = await this.axiosIntance.get<IPropertyListResponse>(
+    const response = await this.axiosIntance.post<IPropertyListResponse>(
       "property/own"
     );
 
