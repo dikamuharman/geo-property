@@ -1,7 +1,12 @@
 import { useForm } from 'react-hook-form';
+import useAddPropertyStore from '../store/useAddPropertyStore';
 import { TAddContactPropertyForm } from '../types/addPropertyFormType';
 
 const useAddContactProperty = () => {
+  const setContactProperty = useAddPropertyStore(
+    (state) => state.setContactProperty
+  );
+
   const {
     handleSubmit,
     control,
@@ -16,6 +21,7 @@ const useAddContactProperty = () => {
 
   const onSubmit = (data: TAddContactPropertyForm) => {
     console.log(data);
+    setContactProperty({ ...data });
   };
 
   return {

@@ -16,6 +16,7 @@ export type TBaseProperty = {
   dayaListrik: string;
   fasilitasProperty: string[];
   fasilitaLuarProperty: string[];
+  photos: File[];
 };
 
 export type TPropertyJualRumah = TBaseProperty & {
@@ -54,4 +55,27 @@ export type TAddContactPropertyForm = {
   nama: string;
   email: string;
   nomorHp: string;
+};
+
+export type TSetAddress = {
+  latLng: [number, number];
+  address: string;
+};
+
+export type TSetPhotos = {
+  photos: File[];
+};
+
+export type TAddPropertyAction = {
+  setAddress: ({ latLng, address }: TSetAddress) => void;
+  setAboutProperty: ({
+    deskirpsi,
+    judulIklan,
+    kondisiProperti,
+    tipeIklan,
+    tipeProperti,
+  }: TAddAboutPropertyForm) => void;
+  setDetailProperty: (detailProperty: TAddPropertyForm) => void;
+  setPhotos: (photos: File[]) => void;
+  setContactProperty: (contactProperty: TAddContactPropertyForm) => void;
 };

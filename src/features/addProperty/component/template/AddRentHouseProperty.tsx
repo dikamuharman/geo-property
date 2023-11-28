@@ -13,7 +13,7 @@ import { Controller } from 'react-hook-form';
 import { FaChevronRight } from 'react-icons/fa';
 import { CustomBadge, CustomTextField } from '../../../../components';
 import CustomSelectControl from '../../../../components/customFormControl/CustomSelectControl';
-import useAddDetailSellHomeProperty from '../../hooks/useAddDetailSellHomeProperty';
+import useAddDetailProperty from '../../hooks/useAddDetailProperty';
 import CommonInputProperty from '../organisms/CommonInputProperty';
 
 interface AddRentHousePropertyProps {}
@@ -21,8 +21,7 @@ interface AddRentHousePropertyProps {}
 const AddRentHouseProperty: React.FC<AddRentHousePropertyProps> = () => {
   const [gray900] = useToken('colors', ['gray.900']);
   const [shadow] = useToken('shadows', ['md']);
-  const { control, errors, handleSubmit, onSubmit } =
-    useAddDetailSellHomeProperty();
+  const { control, errors, handleSubmit, onSubmit } = useAddDetailProperty();
 
   return (
     <VStack w="full" alignItems="flex-start" gap={10}>

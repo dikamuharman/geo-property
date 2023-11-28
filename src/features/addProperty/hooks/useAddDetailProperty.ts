@@ -1,10 +1,12 @@
 import { useForm } from 'react-hook-form';
-import {
-  TAddPropertyForm,
-  TPropertySewaRumah,
-} from '../types/addPropertyFormType';
+import useAddPropertyStore from '../store/useAddPropertyStore';
+import { TAddPropertyForm } from '../types/addPropertyFormType';
 
-const useAddDetailSellHomeProperty = () => {
+const useAddDetailProperty = () => {
+  const setDetailProperty = useAddPropertyStore(
+    (state) => state.setDetailProperty
+  );
+
   const {
     control,
     handleSubmit,
@@ -28,16 +30,16 @@ const useAddDetailSellHomeProperty = () => {
     },
   });
 
-  const onSubmit = (data: TPropertySewaRumah) => {
-    console.log(data);
+  const onSubmit = (data: TAddPropertyForm) => {
+    setDetailProperty({ ...data });
   };
 
   return {
+    onSubmit,
     control,
     handleSubmit,
     errors,
-    onSubmit,
   };
 };
 
-export default useAddDetailSellHomeProperty;
+export default useAddDetailProperty;

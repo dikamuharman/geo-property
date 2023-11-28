@@ -2,7 +2,7 @@ import { Box, HStack, Input, VStack } from '@chakra-ui/react';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import * as turf from '@turf/turf';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import Map from '../../../map';
 import useMapStore from '../../../map/store/useMapStore';
 
@@ -10,8 +10,11 @@ interface DrawMapProps {}
 
 const DrawMap: FC<DrawMapProps> = () => {
   // cara expose map menggunakan zustand
-  const map = useMapStore((state) => state.map);
-  const [latLng, setLatLng] = useState<[number, number]>([0, 0]);
+  const [map, setCentroid, centroid] = useMapStore((state) => [
+    state.map,
+    state.setCentroid,
+    state.centroid,
+  ]);
 
   useEffect(() => {
     if (!map) return;
@@ -39,7 +42,7 @@ const DrawMap: FC<DrawMapProps> = () => {
             const geom = feature.geometry.coordinates;
             const poly = turf.polygon(geom);
             const center = turf.centroid(poly);
-            setLatLng(center.geometry.coordinates as [number, number]);
+            setCentroid(center.geometry.coordinates as [number, number]);
           }
         }
       }
@@ -58,8 +61,8 @@ const DrawMap: FC<DrawMapProps> = () => {
         <Map />
       </Box>
       <HStack w="full">
-        <Input disabled value={latLng[0]} size="lg" />
-        <Input disabled value={latLng[1]} size="lg" />
+        <Input disabled value={centroid?.[0] || 0} size="lg" />
+        <Input disabled value={centroid?.[1] || 0} size="lg" />
       </HStack>
     </VStack>
   );

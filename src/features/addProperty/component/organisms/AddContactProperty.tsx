@@ -51,7 +51,7 @@ const AddContactProperty: React.FC<AddContactPropertyProps> = () => {
         )}
       />
       <Controller
-        name="nama"
+        name="nomorHp"
         control={control}
         rules={{ required: true }}
         render={({ field, fieldState }) => (
@@ -77,6 +77,7 @@ const AddContactProperty: React.FC<AddContactPropertyProps> = () => {
         color="white"
         _hover={{ backgroundColor: gray900, shadow: shadow }}
         rightIcon={<FaChevronRight />}
+        type="submit"
       >
         Iklankan Properti
       </Button>

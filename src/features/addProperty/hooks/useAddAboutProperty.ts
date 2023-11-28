@@ -1,8 +1,13 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import useAddPropertyStore from '../store/useAddPropertyStore';
 import { TAddAboutPropertyForm } from '../types/addPropertyFormType';
 
 const useAddAboutProperty = () => {
+  const setAboutProperty = useAddPropertyStore(
+    (state) => state.setAboutProperty
+  );
+
   const navigate = useNavigate();
   const {
     handleSubmit,
@@ -19,6 +24,7 @@ const useAddAboutProperty = () => {
   });
 
   const onSubmit = (data: TAddAboutPropertyForm) => {
+    setAboutProperty({ ...data });
     navigate(
       `/add-property/detail-property?typeAds=${data.tipeIklan}&typeProperty=${data.tipeProperti}`
     );
