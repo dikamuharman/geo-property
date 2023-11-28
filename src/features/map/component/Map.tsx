@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import mapboxgl from 'mapbox-gl';
-import { FC, useCallback, useRef, useState } from 'react';
+import { FC, useCallback, useRef } from 'react';
 import useMapStore from '../store/useMapStore';
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_KEY as string;
@@ -10,11 +10,12 @@ interface MapProps {}
 
 const Map: FC<MapProps> = () => {
   // const mapContainer = useRef<HTMLDivElement | null>(null);
-  const [setMapStore] = useMapStore((state) => [state.setMap]);
+  const [setMapStore, center, zoom] = useMapStore((state) => [
+    state.setMap,
+    state.center,
+    state.zoom,
+  ]);
   const map = useRef<mapboxgl.Map | null>(null);
-  const [lng] = useState(-70.9);
-  const [lat] = useState(42.35);
-  const [zoom] = useState(9);
 
   // useEffect(() => {
   //   if (map.current) return; // initialize map only once
@@ -35,12 +36,12 @@ const Map: FC<MapProps> = () => {
       map.current = new mapboxgl.Map({
         container: wrapper,
         style: 'mapbox://styles/mapbox/streets-v12',
-        center: [lng, lat],
+        center: [center[0], center[1]],
         zoom: zoom,
       });
       setMapStore(map.current);
     },
-    [lat, lng, zoom]
+    [center, zoom]
   );
 
   return <Box ref={mapWrapper} h="full" w="full" />;
