@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Box,
+  Button,
   ChakraProvider,
   HStack,
-  Heading,
   Icon,
   Image,
   Text,
@@ -14,6 +14,7 @@ import { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom/client';
 import { FaBath } from 'react-icons/fa';
 import { IoBed } from 'react-icons/io5';
+import { useNavigate } from 'react-router-dom';
 import { layerName, sourceName } from '../../../config/constants/constants';
 import useMapStore from '../store/useMapStore';
 import '../style/map.css';
@@ -27,6 +28,7 @@ interface useOnLoadMapProps {
 const useOnLoadMap = ({ data, lat, lng }: useOnLoadMapProps) => {
   const containerPopupRef = useRef<HTMLElement | null>(null);
   const map = useMapStore((state) => state.map);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (data === null) return;
@@ -90,9 +92,16 @@ const useOnLoadMap = ({ data, lat, lng }: useOnLoadMapProps) => {
                   {property.price}
                 </Text>
                 <Box>
-                  <Heading as="h3" size="sm">
+                  <Button
+                    variant="link"
+                    size="lg"
+                    colorScheme="black"
+                    onClick={() => {
+                      navigate(`/search/detail/${property.uid}`);
+                    }}
+                  >
                     {property.title_ads}
-                  </Heading>
+                  </Button>
                   <Text fontSize="sm" color="gray.500">
                     {property.address}
                   </Text>
@@ -100,19 +109,19 @@ const useOnLoadMap = ({ data, lat, lng }: useOnLoadMapProps) => {
                 <HStack>
                   <HStack>
                     <Icon as={FaBath} color="blue.500" />
-                    <Text>2</Text>
+                    <Text>{property.bath_rooms}</Text>
                   </HStack>
                   <HStack>
                     <Icon as={IoBed} color="blue.500" />
-                    <Text>2</Text>
+                    <Text>{property.bed_rooms}</Text>
                   </HStack>
                   <HStack>
                     <Text color="blue.500">LT</Text>
-                    <Text>144 M²</Text>
+                    <Text>{property.surface_area} M²</Text>
                   </HStack>
                   <HStack>
                     <Text color="blue.500">LB</Text>
-                    <Text>144 M²</Text>
+                    <Text>{property.building_area} M²</Text>
                   </HStack>
                 </HStack>
               </VStack>

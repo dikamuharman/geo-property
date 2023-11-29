@@ -1,11 +1,18 @@
 import { Grid, GridItem } from '@chakra-ui/react';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import DetailProperty from '../features/detail/component/DetailProperty';
 import DetailSeller from '../features/detail/component/DetailSeller';
+import useDetail from '../features/detail/hooks/useDetail';
 
 interface DetailPageProps {}
 
 const DetailPage: FC<DetailPageProps> = () => {
+  const { data } = useDetail();
+
+  useEffect(() => {
+    console.log(data);
+  });
+
   return (
     <Grid
       templateColumns="repeat(12, 1fr)"

@@ -4,6 +4,7 @@ interface Property {
   user_id: number;
   images: Images[];
   title_ads: string;
+  address: string;
   condition: string;
   description: string;
   price: number;

@@ -1,9 +1,10 @@
-import { AxiosInstance } from "axios";
-import axiosIntance from "../../../lib/axios";
+import { AxiosInstance } from 'axios';
+import axiosIntance from '../../../lib/axios';
 import {
-  IPropertyResponse,
   IPropertyListResponse,
-} from "../../../types/propertyType";
+  IPropertyResponse,
+} from '../../../types/propertyType';
+import useUserStore from '../../authentication/store/useUserStore';
 
 class ListAddsService {
   axiosIntance: AxiosInstance;
@@ -13,15 +14,21 @@ class ListAddsService {
   }
   public async listAdds(): Promise<IPropertyListResponse> {
     const response = await this.axiosIntance.post<IPropertyListResponse>(
-      "property/own"
+      'property/own'
     );
 
     return response.data;
   }
 
-  public async listAddsById(id: number): Promise<IPropertyResponse> {
+  public async listAddsById(id: string): Promise<IPropertyResponse> {
+    const token = useUserStore.getState().token;
     const response = await this.axiosIntance.get<IPropertyResponse>(
-      `property/${id}`
+      `property/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
 
     return response.data;
