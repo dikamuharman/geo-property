@@ -27,7 +27,9 @@ const DrawMap: FC<DrawMapProps> = () => {
       defaultMode: 'draw_polygon',
     });
 
-    map.addControl(draw);
+    map.on('load', () => {
+      map.addControl(draw);
+    });
 
     // TODO: send geom to server
 
@@ -40,7 +42,6 @@ const DrawMap: FC<DrawMapProps> = () => {
         for (const feature of data.features) {
           if (feature.geometry.type === 'Polygon') {
             const geom = feature.geometry.coordinates;
-
             const poly = turf.polygon(geom);
             const center = turf.centroid(poly);
             setCentroid(
