@@ -1,11 +1,11 @@
 import { Icon, Text } from '@chakra-ui/react';
-import { Select, chakraComponents } from 'chakra-react-select';
+import { AsyncSelect, chakraComponents } from 'chakra-react-select';
 import { FC } from 'react';
 import { IconType } from 'react-icons';
 import { FaChevronDown } from 'react-icons/fa';
 
 export interface CustomSelectProps {
-  options: {
+  options?: {
     label: string;
     value: string | number[];
   }[];
@@ -16,6 +16,7 @@ export interface CustomSelectProps {
   name?: string;
   optionsIcon?: IconType;
   dropdownIndicator?: IconType;
+  loadOptions?: (inputValue: string) => void;
 }
 
 const CustomSelect: FC<CustomSelectProps> = ({
@@ -24,10 +25,14 @@ const CustomSelect: FC<CustomSelectProps> = ({
   placeholder,
   name,
   optionsIcon,
+  loadOptions,
   dropdownIndicator = FaChevronDown,
 }) => {
   return (
-    <Select
+    <AsyncSelect
+      cacheOptions
+      loadOptions={loadOptions}
+      defaultOptions
       size="lg"
       placeholder={placeholder}
       onChange={(valueOption) => onChange && onChange(valueOption?.value)}

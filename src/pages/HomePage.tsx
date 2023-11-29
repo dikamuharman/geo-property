@@ -8,12 +8,45 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { FC } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import CustomSelect from '../components/CustomSelect/CustomSelect';
+import searchService from '../features/searchProperty/service/searchService';
 
 interface HomePageProps {}
 
+type TOptionType = {
+  value: number[];
+};
+
 const HomePage: FC<HomePageProps> = () => {
+  const navigate = useNavigate();
+  const { control, handleSubmit } = useForm<TOptionType>({
+    defaultValues: {
+      value: [0],
+    },
+  });
+
+  const onSubmit = (data: TOptionType) => {
+    navigate(`/search?lat=${data.value[0]}&lng=${data.value[1]}`);
+  };
+
+  const loadOptions = (inputValue: string) => {
+    return new Promise((resolve) => {
+      if (inputValue.length <= 3) {
+        return;
+      }
+      const result = searchService.searchProperty(inputValue).then((res) => {
+        return res.data?.map((item) => ({
+          label: item.name,
+          value: item.center_point,
+        }));
+      });
+      resolve(result);
+    });
+  };
+
   return (
     <Flex alignItems="center" h="100%">
       <Stack direction="column" gap="4">
@@ -34,26 +67,36 @@ const HomePage: FC<HomePageProps> = () => {
           </Text>
         </Box>
         <Box bg="white" borderRadius="xl" p="7">
-          <HStack>
-            <CustomSelect
-              options={[
-                { label: 'Pancoran mas, Depok', value: 'Pancoran mas, Depok' },
-                { label: 'Beji, Depok', value: 'Beji, Depok' },
-              ]}
-              placeholder="Masukan lokasi (Khusus daerah depok)"
-              onChange={(value) => {
-                console.log(value);
-              }}
-              isClearable
-              optionsIcon={FaMapMarkerAlt}
-              dropdownIndicator={FaSearch}
+          <HStack as={'form'} onSubmit={handleSubmit(onSubmit)}>
+            <Controller
+              name="value"
+              control={control}
+              render={({ field }) => (
+                <CustomSelect
+                  options={[
+                    {
+                      label: 'Pancoran mas, Depok',
+                      value: 'Pancoran mas, Depok',
+                    },
+                    { label: 'Beji, Depok', value: 'Beji, Depok' },
+                  ]}
+                  placeholder="Masukan lokasi (Khusus daerah depok)"
+                  onChange={(value) => {
+                    field.onChange(value);
+                  }}
+                  isClearable
+                  optionsIcon={FaMapMarkerAlt}
+                  dropdownIndicator={FaSearch}
+                  loadOptions={loadOptions}
+                />
+              )}
             />
 
-            <Button colorScheme="blue" size="lg">
+            <Button colorScheme="blue" size="lg" type="submit">
               Cari properti
             </Button>
           </HStack>
-          {/* <Text color="blue.500">*khusus daerah kota depok</Text> */}
+          <Text color="blue.500">*khusus daerah kota depok</Text>
         </Box>
       </Stack>
     </Flex>
