@@ -7,9 +7,9 @@ import { FaChevronDown } from 'react-icons/fa';
 export interface CustomSelectProps {
   options: {
     label: string;
-    value: string;
+    value: string | number[];
   }[];
-  onChange?: (value: string | undefined) => void;
+  onChange?: (value: string | number[] | undefined) => void;
   placeholder?: string;
   isClearable?: boolean;
   value?: string;
