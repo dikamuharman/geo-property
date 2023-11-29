@@ -34,9 +34,6 @@ const HomePage: FC<HomePageProps> = () => {
 
   const loadOptions = (inputValue: string) => {
     return new Promise((resolve) => {
-      if (inputValue.length <= 3) {
-        return;
-      }
       const result = searchService.searchProperty(inputValue).then((res) => {
         return res.data?.map((item) => ({
           label: item.name,
