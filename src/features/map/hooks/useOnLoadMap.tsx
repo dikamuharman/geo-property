@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Box,
-  Button,
   ChakraProvider,
   HStack,
   Icon,
   Image,
+  Link,
   Text,
   VStack,
 } from '@chakra-ui/react';
@@ -14,7 +14,6 @@ import { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom/client';
 import { FaBath } from 'react-icons/fa';
 import { IoBed } from 'react-icons/io5';
-import { useNavigate } from 'react-router-dom';
 import { layerName, sourceName } from '../../../config/constants/constants';
 import useMapStore from '../store/useMapStore';
 import '../style/map.css';
@@ -28,10 +27,10 @@ interface useOnLoadMapProps {
 const useOnLoadMap = ({ data, lat, lng }: useOnLoadMapProps) => {
   const containerPopupRef = useRef<HTMLElement | null>(null);
   const map = useMapStore((state) => state.map);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (data === null) return;
+    console.log(data);
     if (!map) return;
     map.flyTo({
       center: [Number(lat), Number(lng)],
@@ -101,21 +100,17 @@ const useOnLoadMap = ({ data, lat, lng }: useOnLoadMapProps) => {
                 h={120}
                 objectFit={'cover'}
               />
-              <VStack w="full" alignItems="flex-start" p={4}>
+              <VStack w="full" alignItems="flex-start" p={4} h="full">
                 <Text bg="blue.50" py="1" px="2" color="blue.500" rounded="lg">
                   {property.price}
                 </Text>
                 <Box>
-                  <Button
-                    variant="link"
-                    size="lg"
-                    colorScheme="black"
-                    onClick={() => {
-                      navigate(`/search/detail/${property.uid}`);
-                    }}
+                  <Link
+                    fontSize="large"
+                    href={`/search/detail/${property.uuid}`}
                   >
                     {property.title_ads}
-                  </Button>
+                  </Link>
                   <Text fontSize="sm" color="gray.500">
                     {property.address}
                   </Text>
