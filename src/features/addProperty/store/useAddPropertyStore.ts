@@ -45,8 +45,9 @@ const useAddPropertyStore = create<
       latLng: [0, 0],
       address: '',
       photos: [],
-      setAddress: ({ address, latLng }) =>
-        set((state) => ({ ...state, address, latLng })),
+      geometry: [[]],
+      setAddress: ({ address, latLng, geometry }) =>
+        set((state) => ({ ...state, address, latLng, geometry })),
       setAboutProperty: ({
         deskirpsi,
         judulIklan,

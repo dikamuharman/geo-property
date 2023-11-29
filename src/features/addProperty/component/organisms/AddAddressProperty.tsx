@@ -11,7 +11,11 @@ import SearchAddress from '../molecules/SearchAddress';
 interface AddAddressPropertyProps {}
 
 const AddAddressProperty: FC<AddAddressPropertyProps> = () => {
-  const centroid = useMapStore((state) => state.centroid);
+  const [centroid, geometry] = useMapStore((state) => [
+    state.centroid,
+    state.geometry,
+  ]);
+
   const setAddress = useAddPropertyStore((state) => state.setAddress);
   const navigate = useNavigate();
   const [gray900] = useToken('colors', ['gray.900']);
@@ -21,7 +25,7 @@ const AddAddressProperty: FC<AddAddressPropertyProps> = () => {
 
   const onCLick = () => {
     if (centroid !== undefined) {
-      setAddress({ latLng: centroid!, address: adress });
+      setAddress({ latLng: centroid!, address: adress, geometry: geometry! });
       navigate('/add-property/about-property');
     }
   };

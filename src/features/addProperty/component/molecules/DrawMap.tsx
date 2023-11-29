@@ -40,9 +40,13 @@ const DrawMap: FC<DrawMapProps> = () => {
         for (const feature of data.features) {
           if (feature.geometry.type === 'Polygon') {
             const geom = feature.geometry.coordinates;
+
             const poly = turf.polygon(geom);
             const center = turf.centroid(poly);
-            setCentroid(center.geometry.coordinates as [number, number]);
+            setCentroid(
+              center.geometry.coordinates as [number, number],
+              geom as unknown as number[][][]
+            );
           }
         }
       }

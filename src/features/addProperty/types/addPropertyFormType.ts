@@ -59,6 +59,7 @@ export type TAddContactPropertyForm = {
 
 export type TSetAddress = {
   latLng: [number, number];
+  geometry: number[][][];
   address: string;
 };
 
@@ -67,7 +68,7 @@ export type TSetPhotos = {
 };
 
 export type TAddPropertyAction = {
-  setAddress: ({ latLng, address }: TSetAddress) => void;
+  setAddress: ({ latLng, address, geometry }: TSetAddress) => void;
   setAboutProperty: ({
     deskirpsi,
     judulIklan,
