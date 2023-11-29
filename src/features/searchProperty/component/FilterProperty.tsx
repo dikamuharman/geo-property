@@ -9,13 +9,14 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import fieldContent from "../content/fieldContent.json";
 import RadioInput from "./RadioInput";
 import { CustomSelect } from "../../../components";
 import { FaMapMarkerAlt, FaSearch } from "react-icons/fa";
 import searchService from "../service/searchService";
+import useMapStore from "../../map/store/useMapStore";
 
 interface IFilterForm {
   address: string;
@@ -34,6 +35,23 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
 
   const onSubmit = (data: IFilterForm) => {
     console.log(data);
+  };
+
+  const [cordinate, setCordinate] = useState<number[]>([]);
+
+  useEffect(() => {}, [cordinate]);
+
+  const map = useMapStore((state) => state.map);
+  const onChange = (value: number[]) => {
+    // Fly to location
+    const [lng, lat] = value;
+
+    map?.flyTo({
+      center: [Number(lng), Number(lat)],
+      zoom: 15,
+    });
+
+    setCordinate(value);
   };
 
   const loadOptions = (inputValue: string) => {
@@ -72,6 +90,9 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
         ]}
         placeholder="Masukan lokasi (Khusus daerah depok)"
         isClearable
+        onChange={(value) => {
+          onChange(value as number[]);
+        }}
         optionsIcon={FaMapMarkerAlt}
         dropdownIndicator={FaSearch}
         loadOptions={loadOptions}
