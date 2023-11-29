@@ -27,7 +27,7 @@ interface Property {
   kelurahan: string;
   kecamatan: string;
   city: string;
-  center_point: number[];
+  center_point: [number];
   geometry: number[][][];
 }
 
@@ -64,10 +64,10 @@ interface Feature {
 }
 
 export type {
-  IPropertyResponse,
-  IPropertyListResponse,
-  IPropertyUpdateResponse,
-  Property,
-  Images,
   GeoJSON,
+  IPropertyListResponse,
+  IPropertyResponse,
+  IPropertyUpdateResponse,
+  Images,
+  Property,
 };

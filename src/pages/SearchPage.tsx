@@ -1,14 +1,23 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Grid, GridItem } from '@chakra-ui/react';
 import { FC, useState } from 'react';
 import { FaListUl, FaMapMarkerAlt } from 'react-icons/fa';
+import { useSearchParams } from 'react-router-dom';
 import Map from '../features/map';
+import useOnLoadMap from '../features/map/hooks/useOnLoadMap';
 import FilterProperty from '../features/searchProperty/component/FilterProperty';
 import ListProperty from '../features/searchProperty/component/ListProperty';
+import useSearchProperty from '../features/searchProperty/hooks/useSearchProperty';
 
 interface SearchPageProps {}
 
 const SearchPage: FC<SearchPageProps> = () => {
   const [toggleMap, setToggleMap] = useState(true);
+  const { data } = useSearchProperty();
+  const [params] = useSearchParams();
+  const lat = params.get('lat');
+  const lng = params.get('lng');
+  useOnLoadMap({ data, lat: lat!, lng: lng! });
 
   return (
     <Grid templateColumns="repeat(12, 1fr)" h="full" w="full" as="main">

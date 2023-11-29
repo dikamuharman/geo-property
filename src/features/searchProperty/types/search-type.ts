@@ -1,3 +1,5 @@
+import { ResponseGeoJsonType } from './responseGeoJsonType';
+
 interface Search {
   name: string;
   center_point: number[];
@@ -12,4 +14,8 @@ interface ISearchResponse extends IBaseResponse {
   data?: Search[];
 }
 
-export type { ISearchResponse, Search };
+interface IGeojsonSearchResponse extends IBaseResponse {
+  data?: ResponseGeoJsonType;
+}
+
+export type { IGeojsonSearchResponse, ISearchResponse, Search };
