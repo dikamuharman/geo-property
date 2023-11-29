@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Button,
   Divider,
@@ -8,15 +9,18 @@ import {
   Input,
   Text,
   VStack,
-} from "@chakra-ui/react";
-import { FC, useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import fieldContent from "../content/fieldContent.json";
-import RadioInput from "./RadioInput";
-import { CustomSelect } from "../../../components";
-import { FaMapMarkerAlt, FaSearch } from "react-icons/fa";
-import searchService from "../service/searchService";
-import useMapStore from "../../map/store/useMapStore";
+} from '@chakra-ui/react';
+import { useMutation } from '@tanstack/react-query';
+import { GeoJSONSource } from 'mapbox-gl';
+import { FC } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
+import { CustomSelect } from '../../../components';
+import { sourceName } from '../../../config/constants/constants';
+import useMapStore from '../../map/store/useMapStore';
+import fieldContent from '../content/fieldContent.json';
+import searchService from '../service/searchService';
+import RadioInput from './RadioInput';
 
 interface IFilterForm {
   address: string;
@@ -32,26 +36,36 @@ interface FilterPropertyProps {}
 
 const FilterProperty: FC<FilterPropertyProps> = () => {
   const { handleSubmit, register, control } = useForm<IFilterForm>();
+  const map = useMapStore((state) => state.map);
+
+  const mutateFilterProperty = useMutation({
+    mutationFn: (coordinate: number[]) =>
+      searchService.searchPropertyByLocation(coordinate),
+    onSuccess: (data) => {
+      if (!map) return;
+
+      const geoJsonSource = map.getSource(
+        sourceName.resultProperty
+      ) as GeoJSONSource;
+      if (geoJsonSource) {
+        geoJsonSource.setData(data as any);
+        return;
+      }
+    },
+  });
 
   const onSubmit = (data: IFilterForm) => {
     console.log(data);
   };
 
-  const [cordinate, setCordinate] = useState<number[]>([]);
-
-  useEffect(() => {}, [cordinate]);
-
-  const map = useMapStore((state) => state.map);
-  const onChange = (value: number[]) => {
-    // Fly to location
-    const [lng, lat] = value;
-
-    map?.flyTo({
-      center: [Number(lng), Number(lat)],
+  const onChange = (coordinate: string | number[] | undefined) => {
+    if (!map) return;
+    if (!Array.isArray(coordinate)) return;
+    map.flyTo({
+      center: [coordinate[0], coordinate[1]],
       zoom: 15,
     });
-
-    setCordinate(value);
+    mutateFilterProperty.mutate(coordinate);
   };
 
   const loadOptions = (inputValue: string) => {
@@ -83,10 +97,10 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
       <CustomSelect
         options={[
           {
-            label: "Pancoran mas, Depok",
-            value: "Pancoran mas, Depok",
+            label: 'Pancoran mas, Depok',
+            value: 'Pancoran mas, Depok',
           },
-          { label: "Beji, Depok", value: "Beji, Depok" },
+          { label: 'Beji, Depok', value: 'Beji, Depok' },
         ]}
         placeholder="Masukan lokasi (Khusus daerah depok)"
         isClearable
@@ -133,15 +147,15 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
       <FormControl>
         <FormLabel>Luas Bangunan (m2)</FormLabel>
         <HStack gap={4}>
-          <Input {...register("luasBangunan")} />
-          <Input {...register("luasBangunan")} />
+          <Input {...register('luasBangunan')} />
+          <Input {...register('luasBangunan')} />
         </HStack>
       </FormControl>
       <FormControl>
         <FormLabel>Luas Tanah (m2)</FormLabel>
         <HStack gap={4}>
-          <Input {...register("luasTanah")} />
-          <Input {...register("luasTanah")} />
+          <Input {...register('luasTanah')} />
+          <Input {...register('luasTanah')} />
         </HStack>
       </FormControl>
       <FormControl>

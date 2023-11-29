@@ -9,7 +9,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import mapboxGl from 'mapbox-gl';
+import mapboxGl, { GeoJSONSource } from 'mapbox-gl';
 import { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom/client';
 import { FaBath } from 'react-icons/fa';
@@ -38,6 +38,14 @@ const useOnLoadMap = ({ data, lat, lng }: useOnLoadMapProps) => {
       zoom: 15,
     });
 
+    const geoJsonSource = map.getSource(
+      sourceName.resultProperty
+    ) as GeoJSONSource;
+    if (geoJsonSource) {
+      geoJsonSource.setData(data as any);
+      return;
+    }
+
     map.on('load', () => {
       if (map.getSource(sourceName.resultProperty)) {
         map.removeLayer(layerName.polygonLayer);
@@ -46,7 +54,13 @@ const useOnLoadMap = ({ data, lat, lng }: useOnLoadMapProps) => {
 
       map.addSource(sourceName.resultProperty, {
         type: 'geojson',
-        data: data as any,
+        data:
+          data === null
+            ? {
+                type: 'FeatureCollection',
+                features: [],
+              }
+            : data,
       });
 
       map.addLayer({
