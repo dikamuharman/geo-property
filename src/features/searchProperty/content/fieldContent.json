@@ -2,29 +2,29 @@
   "tipeIklan": [
     {
       "content": "dijual",
-      "value": "dijual"
+      "value": "Jual"
     },
     {
       "content": "disewa",
-      "value": "disewa"
+      "value": "Sewa"
     }
   ],
   "tipeProperti": [
     {
       "content": "apartement",
-      "value": "apartement"
+      "value": "Apartement"
     },
     {
       "content": "rumah",
-      "value": "rumah"
+      "value": "Rumah"
     },
     {
       "content": "tanah",
-      "value": "tanah"
+      "value": "Tanah"
     },
     {
       "content": "hotel",
-      "value": "hotel"
+      "value": "Hotel"
     }
   ],
   "kamarTidur": [

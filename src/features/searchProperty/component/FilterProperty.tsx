@@ -9,27 +9,29 @@ import {
   Input,
   Text,
   VStack,
-} from '@chakra-ui/react';
-import { useMutation } from '@tanstack/react-query';
-import { GeoJSONSource } from 'mapbox-gl';
-import { FC } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
-import { CustomSelect } from '../../../components';
-import { sourceName } from '../../../config/constants/constants';
-import useMapStore from '../../map/store/useMapStore';
-import fieldContent from '../content/fieldContent.json';
-import searchService from '../service/searchService';
-import RadioInput from './RadioInput';
+} from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
+import { GeoJSONSource } from "mapbox-gl";
+import { FC } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { FaMapMarkerAlt, FaSearch } from "react-icons/fa";
+import { CustomSelect } from "../../../components";
+import { sourceName, layerName } from "../../../config/constants/constants";
+import useMapStore from "../../map/store/useMapStore";
+import fieldContent from "../content/fieldContent.json";
+import searchService from "../service/searchService";
+import RadioInput from "./RadioInput";
 
 interface IFilterForm {
   address: string;
   tipeIklan: string;
   tipeProperti: string;
-  luasBangunan: string;
-  luasTanah: string;
-  kamarTidur: string;
-  kamarMandi: string;
+  luasBangunanMin: number;
+  luasBangunanMax: number;
+  luasTanahMin: number;
+  luasTanahMax: number;
+  kamarTidur: number;
+  kamarMandi: number;
 }
 
 interface FilterPropertyProps {}
@@ -56,6 +58,35 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
 
   const onSubmit = (data: IFilterForm) => {
     console.log(data);
+    if (!map) return;
+
+    map.setFilter(layerName.polygonLayer, [
+      "all",
+      data.tipeIklan ? ["==", ["get", "type_ads"], data.tipeIklan] : null,
+      data.tipeProperti
+        ? ["==", ["get", "type_property"], data.tipeProperti]
+        : null,
+      String(data.luasBangunanMin) !== "" && String(data.luasBangunanMax) !== ""
+        ? [
+            "all",
+            ["<=", ["get", "building_area"], Number(data.luasBangunanMax)],
+            [">=", ["get", "building_area"], Number(data.luasBangunanMin)],
+          ]
+        : ["all", [">=", ["get", "building_area"], 0]],
+      String(data.luasTanahMin) !== "" && String(data.luasTanahMax) !== ""
+        ? [
+            "all",
+            ["<=", ["get", "building_area"], Number(data.luasTanahMax)],
+            [">=", ["get", "building_area"], Number(data.luasTanahMin)],
+          ]
+        : ["all", [">=", ["get", "building_area"], 0]],
+      String(data.kamarTidur) !== ""
+        ? [">=", ["get", "bed_rooms"], Number(data.kamarTidur)]
+        : null,
+      String(data.kamarMandi) !== ""
+        ? [">=", ["get", "bath_rooms"], Number(data.kamarMandi)]
+        : null,
+    ]);
   };
 
   const onChange = (coordinate: string | number[] | undefined) => {
@@ -97,10 +128,10 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
       <CustomSelect
         options={[
           {
-            label: 'Pancoran mas, Depok',
-            value: 'Pancoran mas, Depok',
+            label: "Pancoran mas, Depok",
+            value: "Pancoran mas, Depok",
           },
-          { label: 'Beji, Depok', value: 'Beji, Depok' },
+          { label: "Beji, Depok", value: "Beji, Depok" },
         ]}
         placeholder="Masukan lokasi (Khusus daerah depok)"
         isClearable
@@ -147,15 +178,15 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
       <FormControl>
         <FormLabel>Luas Bangunan (m2)</FormLabel>
         <HStack gap={4}>
-          <Input {...register('luasBangunan')} />
-          <Input {...register('luasBangunan')} />
+          <Input {...register("luasBangunanMin")} type="number" />
+          <Input {...register("luasBangunanMax")} type="number" />
         </HStack>
       </FormControl>
       <FormControl>
         <FormLabel>Luas Tanah (m2)</FormLabel>
         <HStack gap={4}>
-          <Input {...register('luasTanah')} />
-          <Input {...register('luasTanah')} />
+          <Input {...register("luasTanahMin")} type="number" />
+          <Input {...register("luasTanahMax")} type="number" />
         </HStack>
       </FormControl>
       <FormControl>
