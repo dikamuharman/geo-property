@@ -5,18 +5,17 @@ import {
   FormLabel,
   HStack,
   Heading,
-  Icon,
   Input,
-  InputGroup,
-  InputRightElement,
   Text,
   VStack,
-} from '@chakra-ui/react';
-import { FC } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { MdSearch } from 'react-icons/md';
-import fieldContent from '../content/fieldContent.json';
-import RadioInput from './RadioInput';
+} from "@chakra-ui/react";
+import { FC } from "react";
+import { Controller, useForm } from "react-hook-form";
+import fieldContent from "../content/fieldContent.json";
+import RadioInput from "./RadioInput";
+import { CustomSelect } from "../../../components";
+import { FaMapMarkerAlt, FaSearch } from "react-icons/fa";
+import searchService from "../service/searchService";
 
 interface IFilterForm {
   address: string;
@@ -37,6 +36,18 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
     console.log(data);
   };
 
+  const loadOptions = (inputValue: string) => {
+    return new Promise((resolve) => {
+      const result = searchService.searchProperty(inputValue).then((res) => {
+        return res.data?.map((item) => ({
+          label: item.name,
+          value: item.center_point,
+        }));
+      });
+      resolve(result);
+    });
+  };
+
   return (
     <VStack
       w="full"
@@ -51,14 +62,20 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
         </Heading>
         <Text>Reset filter</Text>
       </HStack>
-      <FormControl>
-        <InputGroup size="lg">
-          <Input {...register('address')} />
-          <InputRightElement>
-            <Icon as={MdSearch} boxSize={8} color="blue.500" />
-          </InputRightElement>
-        </InputGroup>
-      </FormControl>
+      <CustomSelect
+        options={[
+          {
+            label: "Pancoran mas, Depok",
+            value: "Pancoran mas, Depok",
+          },
+          { label: "Beji, Depok", value: "Beji, Depok" },
+        ]}
+        placeholder="Masukan lokasi (Khusus daerah depok)"
+        isClearable
+        optionsIcon={FaMapMarkerAlt}
+        dropdownIndicator={FaSearch}
+        loadOptions={loadOptions}
+      />
       <Divider />
       <FormControl>
         <FormLabel color="gray.600">Tipe Iklan</FormLabel>
@@ -95,15 +112,15 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
       <FormControl>
         <FormLabel>Luas Bangunan (m2)</FormLabel>
         <HStack gap={4}>
-          <Input {...register('luasBangunan')} />
-          <Input {...register('luasBangunan')} />
+          <Input {...register("luasBangunan")} />
+          <Input {...register("luasBangunan")} />
         </HStack>
       </FormControl>
       <FormControl>
         <FormLabel>Luas Tanah (m2)</FormLabel>
         <HStack gap={4}>
-          <Input {...register('luasTanah')} />
-          <Input {...register('luasTanah')} />
+          <Input {...register("luasTanah")} />
+          <Input {...register("luasTanah")} />
         </HStack>
       </FormControl>
       <FormControl>
