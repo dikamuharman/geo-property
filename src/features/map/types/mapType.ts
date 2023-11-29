@@ -5,6 +5,7 @@ export interface MapState {
   zoom: number;
   map?: Map;
   centroid?: [number, number];
+  geometry?: number[][][];
   setMap: (map: Map) => void;
-  setCentroid: (centroid: [number, number]) => void;
+  setCentroid: (centroid: [number, number], geometry: number[][][]) => void;
 }

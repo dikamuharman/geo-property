@@ -6,7 +6,7 @@ const useMapStore = create<MapState>((set) => ({
   zoom: 12,
   centroid: [0, 0],
   setMap: (map) => set({ map }),
-  setCentroid: (centroid) => set({ centroid }),
+  setCentroid: (centroid, geometry) => set({ centroid, geometry }),
 }));
 
 export default useMapStore;
