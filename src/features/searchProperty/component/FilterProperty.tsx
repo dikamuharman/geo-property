@@ -200,6 +200,7 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
           render={({ field }) => (
             <>
               <RadioInput
+                reset={resetRadio}
                 name={field.name}
                 onChange={field.onChange}
                 options={fieldContent.tipeProperti}
