@@ -1,18 +1,55 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Box, Heading, VStack } from "@chakra-ui/react";
-import React from "react";
-import { layerName, sourceName } from "../../../config/constants/constants";
-import Map from "../../map";
-import useMapStore from "../../map/store/useMapStore";
-import usePoi from "../hooks/usePoi";
-import useDetailStore from "../store/useDetailStore";
-import IconSekolah from "../../../assets/icon/Sekolah.png";
-import IconRumahSakit from "../../../assets/icon/Rumah Sakit.png";
-import IconRestoran from "../../../assets/icon/Restoran.png";
-import IconBelanja from "../../../assets/icon/Belanja.png";
-import IconTransport from "../../../assets/icon/Transport.png";
+import {
+  Box,
+  Button,
+  ButtonProps,
+  HStack,
+  Heading,
+  VStack,
+  useToken,
+} from '@chakra-ui/react';
+import React from 'react';
+import { FaGraduationCap, FaStore, FaTrain } from 'react-icons/fa';
+import { GiHealthNormal } from 'react-icons/gi';
+import { IoMdRestaurant } from 'react-icons/io';
+import IconBelanja from '../../../assets/icon/Belanja.png';
+import IconRestoran from '../../../assets/icon/Restoran.png';
+import IconRumahSakit from '../../../assets/icon/Rumah Sakit.png';
+import IconSekolah from '../../../assets/icon/Sekolah.png';
+import IconTransport from '../../../assets/icon/Transport.png';
+import { layerName, sourceName } from '../../../config/constants/constants';
+import Map from '../../map';
+import useMapStore from '../../map/store/useMapStore';
+import usePoi from '../hooks/usePoi';
+import useDetailStore from '../store/useDetailStore';
 
 interface POIPropertyProps {}
+
+const ButtonAction = ({
+  children,
+  ...props
+}: ButtonProps & {
+  children: React.ReactNode;
+}) => {
+  const [blue500] = useToken('colors', ['blue.500']);
+  return (
+    <Button
+      bg="white"
+      color="blue.500"
+      _hover={{
+        bg: blue500,
+        color: 'white',
+      }}
+      _active={{
+        bg: blue500,
+        color: 'white',
+      }}
+      {...props}
+    >
+      {children}
+    </Button>
+  );
+};
 
 const POIProperty: React.FC<POIPropertyProps> = () => {
   const [map] = useMapStore((state) => [state.map]);
@@ -21,7 +58,7 @@ const POIProperty: React.FC<POIPropertyProps> = () => {
   const { data, isLoading } = usePoi();
   const iconPOI: any = {
     Sekolah: IconSekolah,
-    "Rumah Sakit": IconRumahSakit,
+    'Rumah Sakit': IconRumahSakit,
     Restoran: IconRestoran,
     Belanja: IconBelanja,
     Transport: IconTransport,
@@ -31,7 +68,7 @@ const POIProperty: React.FC<POIPropertyProps> = () => {
     if (map && centroid) {
       map.flyTo({
         center: [centroid[0], centroid[1]!],
-        zoom: 20,
+        zoom: 13,
       });
 
       for (const icon in iconPOI) {
@@ -41,40 +78,40 @@ const POIProperty: React.FC<POIPropertyProps> = () => {
         });
       }
 
-      map.on("load", () => {
+      map.on('load', () => {
         if (map.getSource(sourceName.poi)) {
           map.removeLayer(layerName.poiLayer);
           map.removeSource(sourceName.poi);
-          map.removeLayer("polygon-detail-layer");
-          map.removeSource("polygon-detail");
+          map.removeLayer('polygon-detail-layer');
+          map.removeSource('polygon-detail');
         }
 
         map.addSource(sourceName.poi, {
-          type: "geojson",
+          type: 'geojson',
           data: data as any,
         });
 
         map.addLayer({
           id: layerName.poiLayer,
-          type: "symbol",
+          type: 'symbol',
           source: sourceName.poi,
           layout: {
-            "icon-image": ["get", "kategori"],
-            "icon-size": 0.5,
-            "icon-allow-overlap": true,
+            'icon-image': ['get', 'kategori'],
+            'icon-size': 0.5,
+            'icon-allow-overlap': true,
           },
         });
 
-        map.addSource("polygon-detail", {
-          type: "geojson",
+        map.addSource('polygon-detail', {
+          type: 'geojson',
           data: {
-            type: "FeatureCollection",
+            type: 'FeatureCollection',
             features: [
               {
-                type: "Feature",
+                type: 'Feature',
                 properties: {},
                 geometry: {
-                  type: "Polygon",
+                  type: 'Polygon',
                   coordinates: polygon,
                 },
               },
@@ -83,13 +120,13 @@ const POIProperty: React.FC<POIPropertyProps> = () => {
         });
 
         map.addLayer({
-          id: "polygon-detail-layer",
-          type: "fill",
-          source: "polygon-detail",
+          id: 'polygon-detail-layer',
+          type: 'fill',
+          source: 'polygon-detail',
           layout: {},
           paint: {
-            "fill-color": "#3182CE", // blue color fill
-            "fill-opacity": 0.5,
+            'fill-color': '#3182CE', // blue color fill
+            'fill-opacity': 0.5,
           },
         });
       });
@@ -100,7 +137,16 @@ const POIProperty: React.FC<POIPropertyProps> = () => {
       <Heading as="h4" size="lg" fontWeight="semibold">
         Lokasi terdekat
       </Heading>
-      <Box w="full" h={380} rounded="lg" overflow="hidden">
+      <Box w="full" h={380} rounded="lg" overflow="hidden" position="relative">
+        <HStack position="absolute" zIndex={10} gap={4} p={4}>
+          <ButtonAction>Semua</ButtonAction>
+          <ButtonAction leftIcon={<FaGraduationCap />}>Sekolah</ButtonAction>
+          <ButtonAction leftIcon={<FaTrain />}>Transportasi</ButtonAction>
+          <ButtonAction leftIcon={<IoMdRestaurant />}>Restoran</ButtonAction>
+          <ButtonAction leftIcon={<GiHealthNormal />}>Rumah sakit</ButtonAction>
+          <ButtonAction leftIcon={<FaStore />}>Belanja</ButtonAction>
+          <ButtonAction leftIcon={<GiHealthNormal />}>Bank</ButtonAction>
+        </HStack>
         <Map />
       </Box>
     </VStack>
