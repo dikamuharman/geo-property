@@ -26,9 +26,13 @@ import { IoClose } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 import usePhotoStore from '../../store/usePhotosStore';
 
-interface AddImagePropertyProps {}
+interface AddImagePropertyProps {
+  hiddenButton?: boolean;
+}
 
-const AddImageProperty: React.FC<AddImagePropertyProps> = () => {
+const AddImageProperty: React.FC<AddImagePropertyProps> = ({
+  hiddenButton = false,
+}) => {
   const navigate = useNavigate();
   const [images, setImages, removePhoto, resetPhoto] = usePhotoStore(
     (state) => [
@@ -122,19 +126,21 @@ const AddImageProperty: React.FC<AddImagePropertyProps> = () => {
         Anda dapat mengunggah maximal 5 foto properti dan gunakan file dalam
         bentuk jpg dan jpeg
       </Alert>
-      <Button
-        bg="gray.800"
-        color="white"
-        _hover={{ backgroundColor: gray900, shadow: shadow }}
-        rightIcon={<FaChevronRight />}
-        onClick={(e) => {
-          e.preventDefault();
+      {hiddenButton ? null : (
+        <Button
+          bg="gray.800"
+          color="white"
+          _hover={{ backgroundColor: gray900, shadow: shadow }}
+          rightIcon={<FaChevronRight />}
+          onClick={(e) => {
+            e.preventDefault();
 
-          navigate('/add-property/contact-property');
-        }}
-      >
-        Tahap selanjutnya
-      </Button>
+            navigate('/add-property/contact-property');
+          }}
+        >
+          Tahap selanjutnya
+        </Button>
+      )}
     </VStack>
   );
 };
