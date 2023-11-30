@@ -7,20 +7,19 @@ import {
   HStack,
   Heading,
   Input,
-  Text,
   VStack,
-} from "@chakra-ui/react";
-import { useMutation } from "@tanstack/react-query";
-import { GeoJSONSource } from "mapbox-gl";
-import { FC } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { FaMapMarkerAlt, FaSearch } from "react-icons/fa";
-import { CustomSelect } from "../../../components";
-import { sourceName, layerName } from "../../../config/constants/constants";
-import useMapStore from "../../map/store/useMapStore";
-import fieldContent from "../content/fieldContent.json";
-import searchService from "../service/searchService";
-import RadioInput from "./RadioInput";
+} from '@chakra-ui/react';
+import { useMutation } from '@tanstack/react-query';
+import { GeoJSONSource } from 'mapbox-gl';
+import { FC, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
+import { CustomSelect } from '../../../components';
+import { layerName, sourceName } from '../../../config/constants/constants';
+import useMapStore from '../../map/store/useMapStore';
+import fieldContent from '../content/fieldContent.json';
+import searchService from '../service/searchService';
+import RadioInput from './RadioInput';
 
 interface IFilterForm {
   address: string;
@@ -37,7 +36,20 @@ interface IFilterForm {
 interface FilterPropertyProps {}
 
 const FilterProperty: FC<FilterPropertyProps> = () => {
-  const { handleSubmit, register, control } = useForm<IFilterForm>();
+  const [resetRadio, setResetRadio] = useState<boolean | undefined>();
+  const { handleSubmit, register, control, reset } = useForm<IFilterForm>({
+    defaultValues: {
+      address: '',
+      tipeIklan: '',
+      tipeProperti: '',
+      luasBangunanMin: undefined,
+      luasBangunanMax: undefined,
+      luasTanahMin: undefined,
+      luasTanahMax: undefined,
+      kamarTidur: 0,
+      kamarMandi: 0,
+    },
+  });
   const map = useMapStore((state) => state.map);
 
   const mutateFilterProperty = useMutation({
@@ -60,30 +72,30 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
     if (!map) return;
 
     const operator = [
-      "all",
-      data.tipeIklan ? ["==", ["get", "type_ads"], data.tipeIklan] : true,
+      'all',
+      data.tipeIklan ? ['==', ['get', 'type_ads'], data.tipeIklan] : true,
       data.tipeProperti
-        ? ["==", ["get", "type_property"], data.tipeProperti]
+        ? ['==', ['get', 'type_property'], data.tipeProperti]
         : true,
-      String(data.luasBangunanMin) !== "" && String(data.luasBangunanMax) !== ""
+      String(data.luasBangunanMin) !== '' && String(data.luasBangunanMax) !== ''
         ? [
-            "all",
-            ["<=", ["get", "building_area"], Number(data.luasBangunanMax)],
-            [">=", ["get", "building_area"], Number(data.luasBangunanMin)],
+            'all',
+            ['<=', ['get', 'building_area'], Number(data.luasBangunanMax)],
+            ['>=', ['get', 'building_area'], Number(data.luasBangunanMin)],
           ]
         : true,
-      String(data.luasTanahMin) !== "" && String(data.luasTanahMax) !== ""
+      String(data.luasTanahMin) !== '' && String(data.luasTanahMax) !== ''
         ? [
-            "all",
-            ["<=", ["get", "building_area"], Number(data.luasTanahMax)],
-            [">=", ["get", "building_area"], Number(data.luasTanahMin)],
+            'all',
+            ['<=', ['get', 'building_area'], Number(data.luasTanahMax)],
+            ['>=', ['get', 'building_area'], Number(data.luasTanahMin)],
           ]
         : true,
       data.kamarTidur
-        ? [">=", ["get", "bed_rooms"], Number(data.kamarTidur)]
+        ? ['>=', ['get', 'bed_rooms'], Number(data.kamarTidur)]
         : true,
       data.kamarMandi
-        ? [">=", ["get", "bath_rooms"], Number(data.kamarMandi)]
+        ? ['>=', ['get', 'bath_rooms'], Number(data.kamarMandi)]
         : true,
     ];
 
@@ -98,6 +110,23 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
       zoom: 15,
     });
     mutateFilterProperty.mutate(coordinate);
+  };
+
+  const resetFilter = () => {
+    if (!map) return;
+    reset({
+      address: '',
+      tipeIklan: '',
+      tipeProperti: '',
+      luasBangunanMin: undefined,
+      luasBangunanMax: undefined,
+      luasTanahMin: undefined,
+      luasTanahMax: undefined,
+      kamarTidur: 0,
+      kamarMandi: 0,
+    });
+    setResetRadio(true);
+    map.setFilter(layerName.polygonLayer, null);
   };
 
   const loadOptions = (inputValue: string) => {
@@ -124,15 +153,17 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
         <Heading as="h1" size="lg">
           Filter Property
         </Heading>
-        <Text>Reset filter</Text>
+        <Button variant="link" onClick={resetFilter} type="reset">
+          Reset filter
+        </Button>
       </HStack>
       <CustomSelect
         options={[
           {
-            label: "Pancoran mas, Depok",
-            value: "Pancoran mas, Depok",
+            label: 'Pancoran mas, Depok',
+            value: 'Pancoran mas, Depok',
           },
-          { label: "Beji, Depok", value: "Beji, Depok" },
+          { label: 'Beji, Depok', value: 'Beji, Depok' },
         ]}
         placeholder="Masukan lokasi (Khusus daerah depok)"
         isClearable
@@ -155,6 +186,7 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
                 name={field.name}
                 onChange={field.onChange}
                 options={fieldContent.tipeIklan}
+                reset={resetRadio}
               />
             </>
           )}
@@ -179,15 +211,15 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
       <FormControl>
         <FormLabel>Luas Bangunan (m2)</FormLabel>
         <HStack gap={4}>
-          <Input {...register("luasBangunanMin")} type="number" />
-          <Input {...register("luasBangunanMax")} type="number" />
+          <Input {...register('luasBangunanMin')} type="number" />
+          <Input {...register('luasBangunanMax')} type="number" />
         </HStack>
       </FormControl>
       <FormControl>
         <FormLabel>Luas Tanah (m2)</FormLabel>
         <HStack gap={4}>
-          <Input {...register("luasTanahMin")} type="number" />
-          <Input {...register("luasTanahMax")} type="number" />
+          <Input {...register('luasTanahMin')} type="number" />
+          <Input {...register('luasTanahMax')} type="number" />
         </HStack>
       </FormControl>
       <FormControl>
@@ -195,9 +227,11 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
         <Controller
           name="kamarTidur"
           control={control}
+          defaultValue={0}
           render={({ field }) => (
             <>
               <RadioInput
+                reset={resetRadio}
                 name={field.name}
                 onChange={field.onChange}
                 options={fieldContent.kamarTidur}
@@ -208,13 +242,14 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
         />
       </FormControl>
       <FormControl>
-        <FormLabel color="gray.600">Kamar Tidur</FormLabel>
+        <FormLabel color="gray.600">Kamar Mandi</FormLabel>
         <Controller
           name="kamarMandi"
           control={control}
           render={({ field }) => (
             <>
               <RadioInput
+                reset={resetRadio}
                 name={field.name}
                 onChange={field.onChange}
                 options={fieldContent.kamarMandi}

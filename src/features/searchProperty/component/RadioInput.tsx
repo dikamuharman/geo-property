@@ -7,6 +7,7 @@ interface RadioInputProps {
   options: { value: string; content: string }[];
   onChange: (value: string) => void;
   gridTemplateColumns?: string;
+  reset?: boolean;
 }
 
 const RadioInput: FC<RadioInputProps> = ({
@@ -14,10 +15,10 @@ const RadioInput: FC<RadioInputProps> = ({
   onChange,
   options,
   gridTemplateColumns = '2',
+  reset,
 }) => {
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: name,
-    defaultValue: '',
     onChange: onChange,
   });
 
@@ -33,7 +34,7 @@ const RadioInput: FC<RadioInputProps> = ({
       {options.map((option) => {
         const radio = getRadioProps({ value: option.value });
         return (
-          <RadioItem key={option.value} radioProps={radio}>
+          <RadioItem key={option.value} radioProps={radio} reset={reset}>
             {option.content}
           </RadioItem>
         );

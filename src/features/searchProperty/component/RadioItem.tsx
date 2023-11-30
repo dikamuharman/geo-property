@@ -3,15 +3,22 @@ import { FC, ReactNode } from 'react';
 
 interface RadioItemProps {
   children: ReactNode;
+  reset?: boolean;
   radioProps: UseRadioProps;
 }
 
-const RadioItem: FC<RadioItemProps> = ({ children, radioProps }) => {
+const RadioItem: FC<RadioItemProps> = ({ children, radioProps, reset }) => {
   const { getInputProps, getRadioProps, state, htmlProps } =
     useRadio(radioProps);
 
   const input = getInputProps();
   const checkbox = getRadioProps();
+
+  if (reset === undefined) {
+    state.isChecked = radioProps.isChecked!;
+  } else {
+    state.isChecked = false;
+  }
 
   return (
     <Box as="label" w="full" {...htmlProps}>
