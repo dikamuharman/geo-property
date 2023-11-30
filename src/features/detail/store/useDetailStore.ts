@@ -48,7 +48,7 @@ const useDetailStore = create<IUseDetailStore>((set) => ({
   kelurahan: '',
   kecamatan: '',
   city: '',
-  center_point: [0],
+  center_point: [0, 0],
   geometry: [[[0]]],
   setDetail: (property) => set({ ...property }),
 }));

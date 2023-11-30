@@ -5,6 +5,7 @@ import DetailAds from './DetailAds';
 import FacilityProperty from './FacilityProperty';
 import GalleryImage from './GalleryImage';
 import HeadlineProperty from './HeadlineProperty';
+import POIProperty from './POIProperty';
 
 interface DetailPropertyProps {}
 
@@ -19,6 +20,9 @@ const DetailProperty: FC<DetailPropertyProps> = () => {
       <DetailAds />
       <Divider />
       <FacilityProperty />
+      <Divider />
+      <POIProperty />
+      <Divider />
     </VStack>
   );
 };

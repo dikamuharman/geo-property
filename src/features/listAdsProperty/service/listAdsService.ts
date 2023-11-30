@@ -5,9 +5,11 @@ import {
   IPropertyResponse,
 } from '../../../types/propertyType';
 import useUserStore from '../../authentication/store/useUserStore';
+import { IPOIResponse } from '../../detail/types/poiType';
 
 class ListAddsService {
   axiosIntance: AxiosInstance;
+  token = useUserStore.getState().token;
 
   constructor() {
     this.axiosIntance = axiosIntance;
@@ -21,15 +23,22 @@ class ListAddsService {
   }
 
   public async listAddsById(id: string): Promise<IPropertyResponse> {
-    const token = useUserStore.getState().token;
     const response = await this.axiosIntance.get<IPropertyResponse>(
       `property/${id}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${this.token}`,
         },
       }
     );
+
+    return response.data;
+  }
+
+  public async poi(centroid: number[]): Promise<IPOIResponse> {
+    const response = await this.axiosIntance.post<IPOIResponse>('poi', {
+      center_point: centroid,
+    });
 
     return response.data;
   }

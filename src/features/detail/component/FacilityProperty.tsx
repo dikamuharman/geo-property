@@ -13,7 +13,9 @@ const FacilityProperty: FC<FacilityPropertyProps> = () => {
 
   return (
     <VStack w="full" justifyContent="flex-start" gap={8}>
-      <Heading w="full">Fasilitas Properti</Heading>
+      <Heading w="full" size="lg">
+        Fasilitas Properti
+      </Heading>
       <SimpleGrid columns={5} spacing={8} w="full">
         {facilitys.map((facility, index) => (
           <Box
