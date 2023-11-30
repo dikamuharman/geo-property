@@ -11,9 +11,34 @@ import IconRumahSakit from "../../../assets/icon/Rumah Sakit.png";
 import IconRestoran from "../../../assets/icon/Restoran.png";
 import IconBelanja from "../../../assets/icon/Belanja.png";
 import IconTransport from "../../../assets/icon/Transport.png";
-import IconBank from "../../../assets/icon/Bank.png";
 
 interface POIPropertyProps {}
+
+const ButtonAction = ({
+  children,
+  ...props
+}: ButtonProps & {
+  children: React.ReactNode;
+}) => {
+  const [blue500] = useToken("colors", ["blue.500"]);
+  return (
+    <Button
+      bg="white"
+      color="blue.500"
+      _hover={{
+        bg: blue500,
+        color: "white",
+      }}
+      _active={{
+        bg: blue500,
+        color: "white",
+      }}
+      {...props}
+    >
+      {children}
+    </Button>
+  );
+};
 
 const POIProperty: React.FC<POIPropertyProps> = () => {
   const [map] = useMapStore((state) => [state.map]);
@@ -33,7 +58,7 @@ const POIProperty: React.FC<POIPropertyProps> = () => {
     if (map && centroid) {
       map.flyTo({
         center: [centroid[0], centroid[1]!],
-        zoom: 20,
+        zoom: 13,
       });
 
       for (const icon in iconPOI) {
@@ -102,7 +127,16 @@ const POIProperty: React.FC<POIPropertyProps> = () => {
       <Heading as="h4" size="lg" fontWeight="semibold">
         Lokasi terdekat
       </Heading>
-      <Box w="full" h={380} rounded="lg" overflow="hidden">
+      <Box w="full" h={380} rounded="lg" overflow="hidden" position="relative">
+        <HStack position="absolute" zIndex={10} gap={4} p={4}>
+          <ButtonAction>Semua</ButtonAction>
+          <ButtonAction leftIcon={<FaGraduationCap />}>Sekolah</ButtonAction>
+          <ButtonAction leftIcon={<FaTrain />}>Transportasi</ButtonAction>
+          <ButtonAction leftIcon={<IoMdRestaurant />}>Restoran</ButtonAction>
+          <ButtonAction leftIcon={<GiHealthNormal />}>Rumah sakit</ButtonAction>
+          <ButtonAction leftIcon={<FaStore />}>Belanja</ButtonAction>
+          <ButtonAction leftIcon={<GiHealthNormal />}>Bank</ButtonAction>
+        </HStack>
         <Map />
       </Box>
     </VStack>
