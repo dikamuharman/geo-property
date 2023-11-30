@@ -11,6 +11,7 @@ import IconRumahSakit from "../../../assets/icon/Rumah Sakit.png";
 import IconRestoran from "../../../assets/icon/Restoran.png";
 import IconBelanja from "../../../assets/icon/Belanja.png";
 import IconTransport from "../../../assets/icon/Transport.png";
+import IconBank from "../../../assets/icon/Bank.png";
 
 interface POIPropertyProps {}
 
@@ -25,6 +26,7 @@ const POIProperty: React.FC<POIPropertyProps> = () => {
     Restoran: IconRestoran,
     Belanja: IconBelanja,
     Transport: IconTransport,
+    Bank: IconBank,
   };
 
   React.useEffect(() => {
