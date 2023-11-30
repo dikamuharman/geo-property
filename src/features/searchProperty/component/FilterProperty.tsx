@@ -57,8 +57,6 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
   });
 
   const onSubmit = (data: IFilterForm) => {
-    console.log(data);
-    console.log(String(data.kamarTidur) !== "");
     if (!map) return;
 
     const operator = [
@@ -88,8 +86,6 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
         ? [">=", ["get", "bath_rooms"], Number(data.kamarMandi)]
         : true,
     ];
-
-    console.log(operator);
 
     map.setFilter(layerName.polygonLayer, operator);
   };
