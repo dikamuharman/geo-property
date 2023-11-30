@@ -31,7 +31,12 @@ const useDetailStore = create<IUseDetailStore>((set) => ({
   bed_rooms: 0,
   floors: 0,
   park_area: 0,
-  furniture: '',
+  furniture: false,
+  user: {
+    Email: '',
+    Name: '',
+    Id: 0,
+  },
   electrical_power: 0,
   oriented: '',
   certificate: '',
