@@ -1,61 +1,37 @@
 import { Grid, GridItem, Image } from '@chakra-ui/react';
 import { FC } from 'react';
+import useDetailStore from '../store/useDetailStore';
 
-interface GalleryImageProps {}
+export interface GalleryImageProps {}
 
 const GalleryImage: FC<GalleryImageProps> = () => {
+  const images = useDetailStore((state) =>
+    state.images.map((image) => image.image)
+  );
+
   return (
     <Grid
       templateRows={'repeat(2, 1fr)'}
       templateColumns="repeat(12, 1fr)"
       gap={4}
       w="full"
+      h="600px"
     >
-      <GridItem rowSpan={2} colSpan={6}>
-        <Image
-          src="https://images.unsplash.com/photo-1655106025233-e4308138f3c5?q=80&w=1974&auto=format&fit=crop&ilgib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          w="full"
-          h="full"
-          objectFit="cover"
-          rounded="lg"
-        />
-      </GridItem>
-      <GridItem colSpan={3}>
-        <Image
-          src="https://images.unsplash.com/photo-1655106025233-e4308138f3c5?q=80&w=1974&auto=format&fit=crop&ilgib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          w="full"
-          h="275"
-          objectFit="cover"
-          rounded="lg"
-        />
-      </GridItem>
-      <GridItem colSpan={3}>
-        <Image
-          src="https://images.unsplash.com/photo-1655106025233-e4308138f3c5?q=80&w=1974&auto=format&fit=crop&ilgib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          w="full"
-          h="275"
-          objectFit="cover"
-          rounded="lg"
-        />
-      </GridItem>
-      <GridItem colSpan={3}>
-        <Image
-          src="https://images.unsplash.com/photo-1655106025233-e4308138f3c5?q=80&w=1974&auto=format&fit=crop&ilgib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          w="full"
-          h="275"
-          objectFit="cover"
-          rounded="lg"
-        />
-      </GridItem>
-      <GridItem colSpan={3}>
-        <Image
-          src="https://images.unsplash.com/photo-1655106025233-e4308138f3c5?q=80&w=1974&auto=format&fit=crop&ilgib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          w="full"
-          h="275"
-          objectFit="cover"
-          rounded="lg"
-        />
-      </GridItem>
+      {images.map((image, index) => (
+        <GridItem
+          rowSpan={index === 0 ? 2 : 1}
+          colSpan={index === 0 ? 6 : 3}
+          key={`${index}-image`}
+        >
+          <Image
+            src={`https://assets-geoproperty.nerdvana-hub.com/foto/${image}`}
+            objectFit="cover"
+            w="full"
+            h={index === 0 ? 614 : 300}
+            rounded="lg"
+          />
+        </GridItem>
+      ))}
     </Grid>
   );
 };

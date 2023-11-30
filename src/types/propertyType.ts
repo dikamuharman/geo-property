@@ -4,6 +4,8 @@ interface Property {
   user_id: number;
   images: Images[];
   title_ads: string;
+  type_ads: string;
+  type_property: string;
   address: string;
   condition: string;
   description: string;
@@ -16,7 +18,7 @@ interface Property {
   bed_rooms: number;
   floors: number;
   park_area: number;
-  furniture: string;
+  furniture: boolean;
   electrical_power: number;
   oriented: string;
   certificate: string;
@@ -30,10 +32,19 @@ interface Property {
   city: string;
   center_point: [number];
   geometry: number[][][];
+  user: User;
+}
+
+export interface User {
+  Email: string;
+  Name: string;
+  Id: number;
 }
 
 interface Images {
-  name: string;
+  id: number;
+  image: string;
+  property_id: number;
 }
 
 interface IBaseResponse {

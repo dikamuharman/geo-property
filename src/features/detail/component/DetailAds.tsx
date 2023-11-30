@@ -13,6 +13,7 @@ import { FaBath, FaCompass, FaCouch, FaParking } from 'react-icons/fa';
 import { FaStairs } from 'react-icons/fa6';
 import { IoBed } from 'react-icons/io5';
 import { MdOutlineFlipToBack, MdOutlineTexture } from 'react-icons/md';
+import useDetailStore from '../store/useDetailStore';
 
 interface DetailAdsProps {}
 
@@ -23,50 +24,72 @@ type detailAdds = {
 };
 
 const DetailAds: FC<DetailAdsProps> = () => {
+  const [
+    surfaceArea,
+    parkArea,
+    buildingArea,
+    oriented,
+    bathRooms,
+    electricalPower,
+    bedRooms,
+    furniture,
+    floors,
+  ] = useDetailStore((state) => [
+    state.surface_area,
+    state.park_area,
+    state.building_area,
+    state.oriented,
+    state.bath_rooms,
+    state.electrical_power,
+    state.bed_rooms,
+    state.furniture,
+    state.floors,
+  ]);
+
   const listDetailProperty: detailAdds[] = [
     {
       title: 'Luas Tanah',
-      value: '120 m2',
+      value: `${surfaceArea} m²`,
       icon: MdOutlineTexture,
     },
     {
       title: 'Lahan Parkir',
-      value: '6',
+      value: parkArea.toString(),
       icon: FaParking,
     },
     {
       title: 'Luas Bangunan',
-      value: '120 m2',
+      value: `${buildingArea} m²`,
       icon: MdOutlineFlipToBack,
     },
     {
       title: 'Orientasi Bangunan',
-      value: 'Timur',
+      value: oriented,
       icon: FaCompass,
     },
     {
       title: 'Kamar Mandi',
-      value: '2',
+      value: bathRooms.toString(),
       icon: FaBath,
     },
     {
       title: 'Daya Listrik',
-      value: '800 VA',
+      value: `${electricalPower} VA`,
       icon: AiFillThunderbolt,
     },
     {
       title: 'Kamar Tidur',
-      value: '4',
+      value: bedRooms.toString(),
       icon: IoBed,
     },
     {
       title: 'Perabot',
-      value: 'Full Perabot',
+      value: furniture ? 'Full parabot' : 'Tanpa perabot',
       icon: FaCouch,
     },
     {
       title: 'Jumlah Lantai',
-      value: '2',
+      value: floors.toString(),
       icon: FaStairs,
     },
   ];
@@ -82,23 +105,26 @@ const DetailAds: FC<DetailAdsProps> = () => {
         Rincian Properti
       </Heading>
       <SimpleGrid columns={2} spacing={8} w="full">
-        {listDetailProperty.map((detail, index) => (
-          <HStack
-            height="50px"
-            rounded="lg"
-            justifyContent="space-between"
-            p={4}
-            border="2px"
-            borderColor="gray.300"
-            key={`${detail.title}-${index}`}
-          >
-            <HStack alignItems="center">
-              <Icon as={detail.icon} color="blue.500" h={'24px'} w={'24px'} />
-              <Text fontSize="lg">{detail.title}</Text>
+        {listDetailProperty.map((detail, index) => {
+          // if (detail.value === '0') return null;
+          return (
+            <HStack
+              height="50px"
+              rounded="lg"
+              justifyContent="space-between"
+              p={4}
+              border="2px"
+              borderColor="gray.300"
+              key={`${detail.title}-${index}`}
+            >
+              <HStack alignItems="center">
+                <Icon as={detail.icon} color="blue.500" h={'24px'} w={'24px'} />
+                <Text fontSize="lg">{detail.title}</Text>
+              </HStack>
+              <Text fontSize="md">{detail.value}</Text>
             </HStack>
-            <Text fontSize="md">{detail.value}</Text>
-          </HStack>
-        ))}
+          );
+        })}
       </SimpleGrid>
     </VStack>
   );

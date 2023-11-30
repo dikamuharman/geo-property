@@ -1,10 +1,15 @@
 import { Avatar, Button, Heading, Text, VStack } from '@chakra-ui/react';
 import { FC } from 'react';
 import { FaWhatsapp } from 'react-icons/fa';
+import useDetailStore from '../store/useDetailStore';
 
 interface DetailSellerProps {}
 
 const DetailSeller: FC<DetailSellerProps> = () => {
+  const [name, image] = useDetailStore((state) => [
+    state.full_name,
+    state.full_name,
+  ]);
   return (
     <VStack justifyContent="center" gap={8}>
       <VStack justifyContent="center">
@@ -18,15 +23,15 @@ const DetailSeller: FC<DetailSellerProps> = () => {
       </VStack>
       <VStack>
         <Avatar
-          name="Dan Abrahmov"
-          src="https://bit.ly/dan-abramov"
+          name={name}
+          src={`https://assets-geoproperty.nerdvana-hub.com/foto/${image}`}
           size="2xl"
           borderWidth={4}
           borderColor={'blue.500'}
         />
         <VStack>
           <Heading as="h4" size="md">
-            Dan Abrahmov
+            {name}
           </Heading>
           <Text color="gray.500">Penjual</Text>
         </VStack>

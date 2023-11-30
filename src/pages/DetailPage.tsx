@@ -3,15 +3,20 @@ import { FC, useEffect } from 'react';
 import DetailProperty from '../features/detail/component/DetailProperty';
 import DetailSeller from '../features/detail/component/DetailSeller';
 import useDetail from '../features/detail/hooks/useDetail';
+import useDetailStore from '../features/detail/store/useDetailStore';
 
 interface DetailPageProps {}
 
 const DetailPage: FC<DetailPageProps> = () => {
-  const { data } = useDetail();
+  const { data, isLoading } = useDetail();
+  const setDetail = useDetailStore((state) => state.setDetail);
 
   useEffect(() => {
     console.log(data);
-  });
+    if (isLoading === false) {
+      setDetail(data!.data!);
+    }
+  }, [isLoading, data, setDetail]);
 
   return (
     <Grid
@@ -20,28 +25,33 @@ const DetailPage: FC<DetailPageProps> = () => {
       as="main"
       h="calc(100vh - 88px)"
     >
-      <GridItem
-        bg="white"
-        w="full"
-        colSpan={3}
-        p="10"
-        overflow="scroll"
-        borderRightStyle="solid"
-        borderRightWidth={2}
-        borderRightColor="gray.100"
-      >
-        <DetailSeller />
-      </GridItem>
-      <GridItem
-        w="full"
-        h="full"
-        overflow="scroll"
-        colSpan={9}
-        position="relative"
-        p="10"
-      >
-        <DetailProperty />
-      </GridItem>
+      {isLoading ? (
+        <div>Loading</div>
+      ) : (
+        <>
+          <GridItem
+            bg="white"
+            w="full"
+            colSpan={3}
+            p="10"
+            h="full"
+            borderRightStyle="solid"
+            borderRightWidth={2}
+            borderRightColor="gray.100"
+          >
+            <DetailSeller />
+          </GridItem>
+          <GridItem
+            w="full"
+            overflow="scroll"
+            colSpan={9}
+            position="relative"
+            p="10"
+          >
+            <DetailProperty />
+          </GridItem>
+        </>
+      )}
     </Grid>
   );
 };

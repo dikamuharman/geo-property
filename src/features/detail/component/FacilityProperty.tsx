@@ -1,21 +1,15 @@
 import { Box, Heading, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import { FC } from 'react';
+import useDetailStore from '../store/useDetailStore';
 
 interface FacilityPropertyProps {}
 
 const FacilityProperty: FC<FacilityPropertyProps> = () => {
-  const facilitys = [
-    'Kitchen set',
-    'Gym',
-    'AC',
-    'Wifi',
-    'Tv kabel',
-    'Keamanan 24/7',
-    'Garasi',
-    'Tempat Olahraga',
-    'Kolam renang',
-    'Area Hiburan',
-  ];
+  const [facilitysIndor, facilityOutDoor] = useDetailStore((state) => [
+    state.facility_in_door,
+    state.facility_out_door,
+  ]);
+  const facilitys = [...facilitysIndor, ...facilityOutDoor];
 
   return (
     <VStack w="full" justifyContent="flex-start" gap={8}>
