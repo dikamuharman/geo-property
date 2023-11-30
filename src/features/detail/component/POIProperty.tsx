@@ -23,6 +23,7 @@ const POIProperty: React.FC<POIPropertyProps> = () => {
 
       map.on('load', () => {
         if (map.getSource(sourceName.poi)) {
+          map.removeLayer(layerName.poiLayer);
           map.removeSource(sourceName.poi);
         }
 

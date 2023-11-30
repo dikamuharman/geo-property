@@ -9,6 +9,7 @@ import AddImagePropertyPage from '../../pages/AddImagePropertyPage';
 import AddPropertyPage from '../../pages/AddPropertyPage';
 import DetailAddPropertyPage from '../../pages/DetailAddPropertyPage';
 import DetailPage from '../../pages/DetailPage';
+import EditAdsPropertyPage from '../../pages/EditAdsPropertyPage';
 import HomePage from '../../pages/HomePage';
 import ListAdsUserPropertyPage from '../../pages/ListAdsUserPropertyPage';
 import SearchPage from '../../pages/SearchPage';
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
       {
         path: 'list-ads',
         element: <ListAdsUserPropertyPage />,
+      },
+      {
+        path: 'list-ads/:id',
+        element: <EditAdsPropertyPage />,
       },
     ],
   },

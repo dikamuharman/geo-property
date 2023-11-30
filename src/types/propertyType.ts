@@ -30,7 +30,7 @@ interface Property {
   kelurahan: string;
   kecamatan: string;
   city: string;
-  center_point: [number];
+  center_point: number[];
   geometry: number[][][];
   user: User;
 }

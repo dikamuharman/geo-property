@@ -1,5 +1,4 @@
 import {
-  Button,
   HStack,
   Heading,
   Icon,
@@ -9,7 +8,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import React from 'react';
-import { FaBath, FaPen } from 'react-icons/fa';
+import { FaBath, FaPen, FaTrash } from 'react-icons/fa';
 import { IoBed } from 'react-icons/io5';
 import { CustomBadge } from '../../../components';
 
@@ -23,6 +22,7 @@ const AdsCardProperty: React.FC<AdsCardPropertyProps> = () => {
       w="full"
       borderColor="gray.300"
       rounded="lg"
+      overflow={'hidden'}
     >
       <Image
         src="https://via.placeholder.com/190"
@@ -68,9 +68,19 @@ const AdsCardProperty: React.FC<AdsCardPropertyProps> = () => {
           </HStack>
         </HStack>
       </VStack>
-      <HStack>
-        <IconButton icon={FaPen} aria-label="Edit" colorScheme="blue" />
-        <Button>1 jam yang lalu</Button>
+      <HStack p={4}>
+        <IconButton
+          icon={<FaPen />}
+          aria-label="Edit"
+          color="blue.500"
+          bg="blue.50"
+        />
+        <IconButton
+          icon={<FaTrash />}
+          aria-label="Hapus"
+          color="red.500"
+          bg="red.50"
+        />
       </HStack>
     </HStack>
   );

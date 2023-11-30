@@ -1,6 +1,5 @@
-import { VStack } from '@chakra-ui/react';
+import { Heading, VStack } from '@chakra-ui/react';
 import React from 'react';
-import { SearchAdsProperty } from '../features/listAdsProperty';
 import ListAdsProperty from '../features/listAdsProperty/component/ListAdsProperty';
 
 interface ListAdsUserPropertyPageProps {}
@@ -8,7 +7,10 @@ interface ListAdsUserPropertyPageProps {}
 const ListAdsUserPropertyPage: React.FC<ListAdsUserPropertyPageProps> = () => {
   return (
     <VStack w="full" alignItems="flex-start" gap={4}>
-      <SearchAdsProperty />
+      <Heading as="h1" color="blue.500" size="lg">
+        List Daftar Iklan
+      </Heading>
+      {/* <SearchAdsProperty /> */}
       <ListAdsProperty />
     </VStack>
   );

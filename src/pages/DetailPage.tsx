@@ -12,7 +12,6 @@ const DetailPage: FC<DetailPageProps> = () => {
   const setDetail = useDetailStore((state) => state.setDetail);
 
   useEffect(() => {
-    console.log(data);
     if (isLoading === false) {
       setDetail(data!.data!);
     }
