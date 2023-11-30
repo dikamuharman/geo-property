@@ -1,6 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Box, Heading, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  ButtonProps,
+  HStack,
+  Heading,
+  VStack,
+  useToken,
+} from "@chakra-ui/react";
 import React from "react";
+import { FaGraduationCap, FaStore, FaTrain } from "react-icons/fa";
+import { GiHealthNormal } from "react-icons/gi";
+import { IoMdRestaurant } from "react-icons/io";
 import { layerName, sourceName } from "../../../config/constants/constants";
 import Map from "../../map";
 import useMapStore from "../../map/store/useMapStore";
@@ -11,6 +22,7 @@ import IconRumahSakit from "../../../assets/icon/Rumah Sakit.png";
 import IconRestoran from "../../../assets/icon/Restoran.png";
 import IconBelanja from "../../../assets/icon/Belanja.png";
 import IconTransport from "../../../assets/icon/Transport.png";
+import IconBank from "../../../assets/icon/Bank.png";
 
 interface POIPropertyProps {}
 
@@ -54,11 +66,26 @@ const POIProperty: React.FC<POIPropertyProps> = () => {
     Bank: IconBank,
   };
 
+  const [activeButton, setActiveButton] = React.useState<string | null>(null);
+
+  const handleButtonClick = (category: string) => {
+    setActiveButton(category === activeButton ? null : category);
+    map?.setFilter(layerName.poiLayer, [
+      "match",
+      ["get", "kategori"],
+      category == "Semua"
+        ? ["Sekolah", "Rumah Sakit", "Restoran", "Belanja", "Transport", "Bank"]
+        : category,
+      true,
+      false,
+    ]);
+  };
+
   React.useEffect(() => {
     if (map && centroid) {
       map.flyTo({
         center: [centroid[0], centroid[1]!],
-        zoom: 13,
+        zoom: 20,
       });
 
       for (const icon in iconPOI) {
@@ -129,13 +156,54 @@ const POIProperty: React.FC<POIPropertyProps> = () => {
       </Heading>
       <Box w="full" h={380} rounded="lg" overflow="hidden" position="relative">
         <HStack position="absolute" zIndex={10} gap={4} p={4}>
-          <ButtonAction>Semua</ButtonAction>
-          <ButtonAction leftIcon={<FaGraduationCap />}>Sekolah</ButtonAction>
-          <ButtonAction leftIcon={<FaTrain />}>Transportasi</ButtonAction>
-          <ButtonAction leftIcon={<IoMdRestaurant />}>Restoran</ButtonAction>
-          <ButtonAction leftIcon={<GiHealthNormal />}>Rumah sakit</ButtonAction>
-          <ButtonAction leftIcon={<FaStore />}>Belanja</ButtonAction>
-          <ButtonAction leftIcon={<GiHealthNormal />}>Bank</ButtonAction>
+          <ButtonAction
+            onClick={() => handleButtonClick("Semua")}
+            isActive={activeButton === "Semua"}
+          >
+            Semua
+          </ButtonAction>
+          <ButtonAction
+            onClick={() => handleButtonClick("Sekolah")}
+            isActive={activeButton === "Sekolah"}
+            leftIcon={<FaGraduationCap />}
+          >
+            Sekolah
+          </ButtonAction>
+          <ButtonAction
+            onClick={() => handleButtonClick("Transportasi")}
+            isActive={activeButton === "Transportasi"}
+            leftIcon={<FaTrain />}
+          >
+            Transportasi
+          </ButtonAction>
+          <ButtonAction
+            onClick={() => handleButtonClick("Restoran")}
+            isActive={activeButton === "Restoran"}
+            leftIcon={<IoMdRestaurant />}
+          >
+            Restoran
+          </ButtonAction>
+          <ButtonAction
+            onClick={() => handleButtonClick("Rumah Sakit")}
+            isActive={activeButton === "Rumah Sakit"}
+            leftIcon={<GiHealthNormal />}
+          >
+            Rumah sakit
+          </ButtonAction>
+          <ButtonAction
+            onClick={() => handleButtonClick("Belanja")}
+            isActive={activeButton === "Belanja"}
+            leftIcon={<FaStore />}
+          >
+            Belanja
+          </ButtonAction>
+          <ButtonAction
+            onClick={() => handleButtonClick("Bank")}
+            isActive={activeButton === "Bank"}
+            leftIcon={<GiHealthNormal />}
+          >
+            Bank
+          </ButtonAction>
         </HStack>
         <Map />
       </Box>
