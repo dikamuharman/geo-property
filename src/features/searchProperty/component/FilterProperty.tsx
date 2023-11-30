@@ -58,35 +58,40 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
 
   const onSubmit = (data: IFilterForm) => {
     console.log(data);
+    console.log(String(data.kamarTidur) !== "");
     if (!map) return;
 
-    map.setFilter(layerName.polygonLayer, [
+    const operator = [
       "all",
-      data.tipeIklan ? ["==", ["get", "type_ads"], data.tipeIklan] : null,
+      data.tipeIklan ? ["==", ["get", "type_ads"], data.tipeIklan] : true,
       data.tipeProperti
         ? ["==", ["get", "type_property"], data.tipeProperti]
-        : null,
+        : true,
       String(data.luasBangunanMin) !== "" && String(data.luasBangunanMax) !== ""
         ? [
             "all",
             ["<=", ["get", "building_area"], Number(data.luasBangunanMax)],
             [">=", ["get", "building_area"], Number(data.luasBangunanMin)],
           ]
-        : ["all", [">=", ["get", "building_area"], 0]],
+        : true,
       String(data.luasTanahMin) !== "" && String(data.luasTanahMax) !== ""
         ? [
             "all",
             ["<=", ["get", "building_area"], Number(data.luasTanahMax)],
             [">=", ["get", "building_area"], Number(data.luasTanahMin)],
           ]
-        : ["all", [">=", ["get", "building_area"], 0]],
-      String(data.kamarTidur) !== ""
+        : true,
+      data.kamarTidur
         ? [">=", ["get", "bed_rooms"], Number(data.kamarTidur)]
-        : null,
-      String(data.kamarMandi) !== ""
+        : true,
+      data.kamarMandi
         ? [">=", ["get", "bath_rooms"], Number(data.kamarMandi)]
-        : null,
-    ]);
+        : true,
+    ];
+
+    console.log(operator);
+
+    map.setFilter(layerName.polygonLayer, operator);
   };
 
   const onChange = (coordinate: string | number[] | undefined) => {
