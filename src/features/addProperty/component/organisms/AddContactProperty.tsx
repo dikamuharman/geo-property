@@ -32,7 +32,7 @@ const AddContactProperty: React.FC<AddContactPropertyProps> = () => {
               placeholder="Masukan nama lengkap"
               name={field.name}
               onChange={field.onChange}
-              isInvalid={!fieldState.isDirty}
+              isInvalid={fieldState.invalid}
               onBlur={field.onBlur}
             />
           );
