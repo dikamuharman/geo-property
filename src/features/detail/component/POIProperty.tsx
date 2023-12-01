@@ -7,22 +7,23 @@ import {
   Heading,
   VStack,
   useToken,
-} from '@chakra-ui/react';
-import React from 'react';
-import { FaGraduationCap, FaStore, FaTrain } from 'react-icons/fa';
-import { GiHealthNormal } from 'react-icons/gi';
-import { IoMdRestaurant } from 'react-icons/io';
-import IconBank from '../../../assets/icon/Bank.png';
-import IconBelanja from '../../../assets/icon/Belanja.png';
-import IconRestoran from '../../../assets/icon/Restoran.png';
-import IconRumahSakit from '../../../assets/icon/Rumah Sakit.png';
-import IconSekolah from '../../../assets/icon/Sekolah.png';
-import IconTransport from '../../../assets/icon/Transport.png';
-import { layerName, sourceName } from '../../../config/constants/constants';
-import Map from '../../map';
-import useMapStore from '../../map/store/useMapStore';
-import usePoi from '../hooks/usePoi';
-import useDetailStore from '../store/useDetailStore';
+} from "@chakra-ui/react";
+import React from "react";
+import { FaGraduationCap, FaStore, FaTrain } from "react-icons/fa";
+import { GiHealthNormal } from "react-icons/gi";
+import { IoMdRestaurant } from "react-icons/io";
+import IconBank from "../../../assets/icon/Bank.png";
+import IconBelanja from "../../../assets/icon/Belanja.png";
+import IconRestoran from "../../../assets/icon/Restoran.png";
+import IconRumahSakit from "../../../assets/icon/Rumah Sakit.png";
+import IconSekolah from "../../../assets/icon/Sekolah.png";
+import IconTransport from "../../../assets/icon/Transport.png";
+import { layerName, sourceName } from "../../../config/constants/constants";
+import Map from "../../map";
+import useMapStore from "../../map/store/useMapStore";
+import usePoi from "../hooks/usePoi";
+import useDetailStore from "../store/useDetailStore";
+import * as turf from "@turf/turf";
 
 interface POIPropertyProps {}
 
@@ -32,18 +33,18 @@ const ButtonAction = ({
 }: ButtonProps & {
   children: React.ReactNode;
 }) => {
-  const [blue500] = useToken('colors', ['blue.500']);
+  const [blue500] = useToken("colors", ["blue.500"]);
   return (
     <Button
       bg="white"
       color="blue.500"
       _hover={{
         bg: blue500,
-        color: 'white',
+        color: "white",
       }}
       _active={{
         bg: blue500,
-        color: 'white',
+        color: "white",
       }}
       {...props}
     >
@@ -55,11 +56,14 @@ const ButtonAction = ({
 const POIProperty: React.FC<POIPropertyProps> = () => {
   const [map] = useMapStore((state) => [state.map]);
   const centroid = useDetailStore((state) => state.center_point);
+  const point = turf.point([centroid[0], centroid[1]]) as any;
+  const units: typeof TemplateUnits = "kilometers";
+  const buffer = turf.buffer(point, 2, { units } as typeof TemplateUnits);
   const polygon = useDetailStore((state) => state.geometry);
   const { data, isLoading } = usePoi();
   const iconPOI: any = {
     Sekolah: IconSekolah,
-    'Rumah Sakit': IconRumahSakit,
+    "Rumah Sakit": IconRumahSakit,
     Restoran: IconRestoran,
     Belanja: IconBelanja,
     Transport: IconTransport,
@@ -71,10 +75,10 @@ const POIProperty: React.FC<POIPropertyProps> = () => {
   const handleButtonClick = (category: string) => {
     setActiveButton(category === activeButton ? null : category);
     map?.setFilter(layerName.poiLayer, [
-      'match',
-      ['get', 'kategori'],
-      category == 'Semua'
-        ? ['Sekolah', 'Rumah Sakit', 'Restoran', 'Belanja', 'Transport', 'Bank']
+      "match",
+      ["get", "kategori"],
+      category == "Semua"
+        ? ["Sekolah", "Rumah Sakit", "Restoran", "Belanja", "Transport", "Bank"]
         : category,
       true,
       false,
@@ -95,40 +99,70 @@ const POIProperty: React.FC<POIPropertyProps> = () => {
         });
       }
 
-      map.on('load', () => {
+      map.on("load", () => {
         if (map.getSource(sourceName.poi)) {
           map.removeLayer(layerName.poiLayer);
           map.removeSource(sourceName.poi);
-          map.removeLayer('polygon-detail-layer');
-          map.removeSource('polygon-detail');
+          map.removeLayer("polygon-detail-layer");
+          map.removeSource("polygon-detail");
+          map.removeLayer("buffer-layer");
+          map.removeLayer("buffer-outline");
+          map.removeSource("buffer");
         }
 
+        map.addSource("buffer", {
+          type: "geojson",
+          data: buffer,
+        });
+
+        map.addLayer({
+          id: "buffer-layer",
+          type: "fill",
+          source: "buffer",
+          layout: {},
+          paint: {
+            "fill-color": "#3182CE", // blue color fill
+            "fill-opacity": 0.15,
+          },
+        });
+
+        map.addLayer({
+          id: "buffer-outline",
+          type: "line",
+          source: "buffer",
+          layout: {},
+          paint: {
+            "line-color": "#3182CE",
+            "line-width": 2,
+          },
+        });
+
         map.addSource(sourceName.poi, {
-          type: 'geojson',
+          type: "geojson",
           data: data as any,
         });
 
         map.addLayer({
           id: layerName.poiLayer,
-          type: 'symbol',
+          type: "symbol",
           source: sourceName.poi,
           layout: {
-            'icon-image': ['get', 'kategori'],
-            'icon-size': 0.5,
-            'icon-allow-overlap': true,
+            "icon-image": ["get", "kategori"],
+            "icon-size": 0.5,
+            "icon-allow-overlap": true,
           },
         });
 
-        map.addSource('polygon-detail', {
-          type: 'geojson',
+        map.addSource("polygon-detail", {
+          type: "geojson",
           data: {
-            type: 'FeatureCollection',
+            type: "FeatureCollection",
             features: [
               {
-                type: 'Feature',
+                type: "Feature",
                 properties: {},
                 geometry: {
-                  type: 'Polygon',
+                  type: "Polygon",
                   coordinates: polygon,
                 },
               },
@@ -137,13 +171,13 @@ const POIProperty: React.FC<POIPropertyProps> = () => {
         });
 
         map.addLayer({
-          id: 'polygon-detail-layer',
-          type: 'fill',
-          source: 'polygon-detail',
+          id: "polygon-detail-layer",
+          type: "fill",
+          source: "polygon-detail",
           layout: {},
           paint: {
-            'fill-color': '#3182CE', // blue color fill
-            'fill-opacity': 0.5,
+            "fill-color": "#3182CE", // blue color fill
+            "fill-opacity": 0.5,
           },
         });
       });
@@ -157,49 +191,49 @@ const POIProperty: React.FC<POIPropertyProps> = () => {
       <Box w="full" h={380} rounded="lg" overflow="hidden" position="relative">
         <HStack position="absolute" zIndex={10} gap={4} p={4}>
           <ButtonAction
-            onClick={() => handleButtonClick('Semua')}
-            isActive={activeButton === 'Semua'}
+            onClick={() => handleButtonClick("Semua")}
+            isActive={activeButton === "Semua"}
           >
             Semua
           </ButtonAction>
           <ButtonAction
-            onClick={() => handleButtonClick('Sekolah')}
-            isActive={activeButton === 'Sekolah'}
+            onClick={() => handleButtonClick("Sekolah")}
+            isActive={activeButton === "Sekolah"}
             leftIcon={<FaGraduationCap />}
           >
             Sekolah
           </ButtonAction>
           <ButtonAction
-            onClick={() => handleButtonClick('Transportasi')}
-            isActive={activeButton === 'Transportasi'}
+            onClick={() => handleButtonClick("Transportasi")}
+            isActive={activeButton === "Transportasi"}
             leftIcon={<FaTrain />}
           >
             Transportasi
           </ButtonAction>
           <ButtonAction
-            onClick={() => handleButtonClick('Restoran')}
-            isActive={activeButton === 'Restoran'}
+            onClick={() => handleButtonClick("Restoran")}
+            isActive={activeButton === "Restoran"}
             leftIcon={<IoMdRestaurant />}
           >
             Restoran
           </ButtonAction>
           <ButtonAction
-            onClick={() => handleButtonClick('Rumah Sakit')}
-            isActive={activeButton === 'Rumah Sakit'}
+            onClick={() => handleButtonClick("Rumah Sakit")}
+            isActive={activeButton === "Rumah Sakit"}
             leftIcon={<GiHealthNormal />}
           >
             Rumah sakit
           </ButtonAction>
           <ButtonAction
-            onClick={() => handleButtonClick('Belanja')}
-            isActive={activeButton === 'Belanja'}
+            onClick={() => handleButtonClick("Belanja")}
+            isActive={activeButton === "Belanja"}
             leftIcon={<FaStore />}
           >
             Belanja
           </ButtonAction>
           <ButtonAction
-            onClick={() => handleButtonClick('Bank')}
-            isActive={activeButton === 'Bank'}
+            onClick={() => handleButtonClick("Bank")}
+            isActive={activeButton === "Bank"}
             leftIcon={<GiHealthNormal />}
           >
             Bank

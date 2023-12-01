@@ -7,14 +7,14 @@ import {
   Image,
   Stack,
   Text,
-} from '@chakra-ui/react';
-import { FC } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
-import HeroImage from '../assets/hero-image.png';
-import CustomSelect from '../components/CustomSelect/CustomSelect';
-import searchService from '../features/searchProperty/service/searchService';
+} from "@chakra-ui/react";
+import { FC } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { FaMapMarkerAlt, FaSearch } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import HeroImage from "../assets/hero-image.png";
+import CustomSelect from "../components/CustomSelect/CustomSelect";
+import searchService from "../features/searchProperty/service/searchService";
 
 interface HomePageProps {}
 
@@ -51,7 +51,7 @@ const HomePage: FC<HomePageProps> = () => {
       <Stack direction="column" gap="4">
         <Image
           src={HeroImage}
-          w={800}
+          w={600}
           position="absolute"
           right={0}
           bottom={0}
@@ -73,7 +73,7 @@ const HomePage: FC<HomePageProps> = () => {
           </Text>
         </Box>
         <Box bg="white" borderRadius="xl" p="7">
-          <HStack as={'form'} onSubmit={handleSubmit(onSubmit)}>
+          <HStack as={"form"} onSubmit={handleSubmit(onSubmit)}>
             <Controller
               name="value"
               control={control}
@@ -81,10 +81,10 @@ const HomePage: FC<HomePageProps> = () => {
                 <CustomSelect
                   options={[
                     {
-                      label: 'Pancoran mas, Depok',
-                      value: 'Pancoran mas, Depok',
+                      label: "Pancoran mas, Depok",
+                      value: "Pancoran mas, Depok",
                     },
-                    { label: 'Beji, Depok', value: 'Beji, Depok' },
+                    { label: "Beji, Depok", value: "Beji, Depok" },
                   ]}
                   placeholder="Masukan lokasi (Khusus daerah depok)"
                   onChange={(value) => {
