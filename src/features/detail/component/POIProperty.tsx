@@ -178,7 +178,7 @@ const POIProperty: React.FC<POIPropertyProps> = () => {
           layout: {},
           paint: {
             "fill-color": "#3182CE", // blue color fill
-            "fill-opacity": 0.5,
+            "fill-opacity": 1,
           },
         });
       });
