@@ -10,12 +10,12 @@ import {
   Text,
   VStack,
   useToken,
-} from '@chakra-ui/react';
-import React from 'react';
-import { IconType } from 'react-icons';
-import { FaBullhorn, FaPen, FaUserCircle } from 'react-icons/fa';
-import { NavLink, Outlet } from 'react-router-dom';
-import { Navbar } from '../components';
+} from "@chakra-ui/react";
+import React from "react";
+import { IconType } from "react-icons";
+import { FaBullhorn, FaUserCircle } from "react-icons/fa";
+import { NavLink, Outlet } from "react-router-dom";
+import { Navbar } from "../components";
 
 interface AccountLayoutProps {}
 
@@ -26,23 +26,23 @@ type AddPropertyLink = {
 };
 
 const links: AddPropertyLink[] = [
+  // {
+  //   label: 'Setting Akun',
+  //   to: '/account',
+  //   icon: FaPen,
+  // },
   {
-    label: 'Setting Akun',
-    to: '/account',
-    icon: FaPen,
-  },
-  {
-    label: 'List Daftar Iklan',
-    to: '/account/list-ads',
+    label: "List Daftar Iklan",
+    to: "/account/list-ads",
     icon: FaBullhorn,
   },
 ];
 
 const AccountLayout: React.FC<AccountLayoutProps> = () => {
-  const [blue500, blue600, blue50] = useToken('colors', [
-    'blue.500',
-    'blue.600',
-    'blue.50',
+  const [blue500, blue600, blue50] = useToken("colors", [
+    "blue.500",
+    "blue.600",
+    "blue.50",
   ]);
   return (
     <Box w="100%" h="100vh">
@@ -97,11 +97,11 @@ const AccountLayout: React.FC<AccountLayoutProps> = () => {
                   color="blue.500"
                   lineHeight="1.2"
                   cursor="pointer"
-                  _hover={{ textDecoration: 'none', backgroundColor: blue50 }}
+                  _hover={{ textDecoration: "none", backgroundColor: blue50 }}
                   _activeLink={{
-                    textDecoration: 'none',
+                    textDecoration: "none",
                     backgroundColor: blue500,
-                    color: 'white',
+                    color: "white",
                     _hover: { backgroundColor: blue600 },
                   }}
                   end

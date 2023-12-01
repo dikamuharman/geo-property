@@ -6,15 +6,19 @@ import {
   Image,
   Text,
   VStack,
-} from '@chakra-ui/react';
-import React from 'react';
-import { FaBath, FaPen, FaTrash } from 'react-icons/fa';
-import { IoBed } from 'react-icons/io5';
-import { CustomBadge } from '../../../components';
+} from "@chakra-ui/react";
+import React from "react";
+import { FaBath, FaPen, FaTrash } from "react-icons/fa";
+import { IoBed } from "react-icons/io5";
+import { CustomBadge } from "../../../components";
+import { Property } from "../../../types/propertyType";
+import formatCurrency from "../../../utils/formatCurrency";
 
-interface AdsCardPropertyProps {}
+interface AdsCardPropertyProps {
+  data: Property;
+}
 
-const AdsCardProperty: React.FC<AdsCardPropertyProps> = () => {
+const AdsCardProperty: React.FC<AdsCardPropertyProps> = ({ data }) => {
   return (
     <HStack
       h={190}
@@ -22,14 +26,14 @@ const AdsCardProperty: React.FC<AdsCardPropertyProps> = () => {
       w="full"
       borderColor="gray.300"
       rounded="lg"
-      overflow={'hidden'}
+      overflow={"hidden"}
     >
       <Image
-        src="https://via.placeholder.com/190"
+        src={`https://assets-geoproperty.nerdvana-hub.com/foto/${data.images[0].image}`}
         alt="ads"
-        h="full"
-        w={200}
+        w={"60%"}
         objectFit="cover"
+        h={"full"}
       />
       <VStack w="full" h="full" alignItems="flex-start" p={4}>
         <HStack h="full" justifyContent="flex-start" alignItems="flex-start">
@@ -41,30 +45,30 @@ const AdsCardProperty: React.FC<AdsCardPropertyProps> = () => {
             padding="5px 10px"
             fontWeight="semibold"
           >
-            Rp 500.000.000
+            {formatCurrency(data.price)}
           </Text>
           <CustomBadge color="green" text="dijual" />
         </HStack>
         <VStack alignItems="flex-start" w="full">
-          <Heading size="md">Rumah Mewah, perumahan citra indah</Heading>
-          <Text>Bekasi, Jawa barat</Text>
+          <Heading size="md">{data.title_ads}</Heading>
+          <Text>{data.address}</Text>
         </VStack>
         <HStack>
           <HStack>
             <Icon as={FaBath} color="blue.500" />
-            <Text>2</Text>
+            <Text>{data.bath_rooms}</Text>
           </HStack>
           <HStack>
             <Icon as={IoBed} color="blue.500" />
-            <Text>2</Text>
+            <Text>{data.bed_rooms}</Text>
           </HStack>
           <HStack>
             <Text color="blue.500">LT</Text>
-            <Text>144 M²</Text>
+            <Text>{data.surface_area} M²</Text>
           </HStack>
           <HStack>
             <Text color="blue.500">LB</Text>
-            <Text>144 M²</Text>
+            <Text>{data.building_area} M²</Text>
           </HStack>
         </HStack>
       </VStack>

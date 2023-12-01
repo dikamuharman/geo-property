@@ -1,11 +1,11 @@
-import { AxiosInstance } from 'axios';
-import axiosIntance from '../../../lib/axios';
+import { AxiosInstance } from "axios";
+import axiosIntance from "../../../lib/axios";
 import {
   IPropertyListResponse,
   IPropertyResponse,
-} from '../../../types/propertyType';
-import useUserStore from '../../authentication/store/useUserStore';
-import { IPOIResponse } from '../../detail/types/poiType';
+} from "../../../types/propertyType";
+import useUserStore from "../../authentication/store/useUserStore";
+import { IPOIResponse } from "../../detail/types/poiType";
 
 class ListAddsService {
   axiosIntance: AxiosInstance;
@@ -16,7 +16,13 @@ class ListAddsService {
   }
   public async listAdds(): Promise<IPropertyListResponse> {
     const response = await this.axiosIntance.post<IPropertyListResponse>(
-      'property/own'
+      "property/own",
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      }
     );
 
     return response.data;
@@ -36,7 +42,7 @@ class ListAddsService {
   }
 
   public async poi(centroid: number[]): Promise<IPOIResponse> {
-    const response = await this.axiosIntance.post<IPOIResponse>('poi', {
+    const response = await this.axiosIntance.post<IPOIResponse>("poi", {
       center_point: centroid,
     });
 

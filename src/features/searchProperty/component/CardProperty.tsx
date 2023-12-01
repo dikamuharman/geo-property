@@ -6,24 +6,34 @@ import {
   Image,
   Text,
   VStack,
-} from '@chakra-ui/react';
-import { FC } from 'react';
-import { FaBath } from 'react-icons/fa';
-import { IoBed } from 'react-icons/io5';
+} from "@chakra-ui/react";
+import { FC } from "react";
+import { FaBath } from "react-icons/fa";
+import { IoBed } from "react-icons/io5";
+import { Property } from "../../../types/propertyType";
+import formatCurrency from "../../../utils/formatCurrency";
 
-interface CardPropertyProps {}
+interface CardPropertyProps {
+  data: Property;
+}
 
-const CardProperty: FC<CardPropertyProps> = () => {
+const CardProperty: FC<CardPropertyProps> = ({ data }) => {
   return (
     <Box
       w="full"
       bg="white"
       shadow="md"
       borderRadius={8}
-      h={'53vh'}
+      h={"53vh"}
       overflow="hidden"
     >
-      <Image src="https://placehold.co/550x350" alt="property" />
+      <Image
+        src={`https://assets-geoproperty.nerdvana-hub.com/foto/${data.images[0].image}`}
+        alt="property"
+        w="full"
+        h="60%"
+        objectFit="cover"
+      />
       <VStack alignItems="flex-start" p="4">
         <HStack alignItems="center">
           <Text
@@ -34,7 +44,7 @@ const CardProperty: FC<CardPropertyProps> = () => {
             fontWeight="medium"
             borderRadius={8}
           >
-            RP 550.000.000
+            {formatCurrency(data.price)}
           </Text>
           <Text
             bg="green.500"
@@ -44,33 +54,33 @@ const CardProperty: FC<CardPropertyProps> = () => {
             fontWeight="medium"
             borderRadius={8}
           >
-            Dijual
+            {data.type_ads}
           </Text>
         </HStack>
         <VStack alignItems="flex-start">
           <Heading fontSize="lg" as="h1" fontWeight="semibold">
-            Rumah dijual di Cibubur
+            {data.title_ads}
           </Heading>
           <Text fontSize="md" color="gray.400">
-            Jl. Raya Cibubur, Cibubur, Jakarta Timur
+            {data.address}
           </Text>
         </VStack>
         <HStack>
           <HStack>
             <Icon as={FaBath} color="blue.500" />
-            <Text>2</Text>
+            <Text>{data.bath_rooms}</Text>
           </HStack>
           <HStack>
             <Icon as={IoBed} color="blue.500" />
-            <Text>2</Text>
+            <Text>{data.bed_rooms}</Text>
           </HStack>
           <HStack>
             <Text color="blue.500">LT</Text>
-            <Text>144 M²</Text>
+            <Text>{data.surface_area} M²</Text>
           </HStack>
           <HStack>
             <Text color="blue.500">LB</Text>
-            <Text>144 M²</Text>
+            <Text>{data.building_area} M²</Text>
           </HStack>
         </HStack>
       </VStack>

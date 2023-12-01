@@ -8,15 +8,16 @@ import {
   Link,
   Text,
   VStack,
-} from '@chakra-ui/react';
-import mapboxGl, { GeoJSONSource } from 'mapbox-gl';
-import { useEffect, useRef } from 'react';
-import ReactDOM from 'react-dom/client';
-import { FaBath } from 'react-icons/fa';
-import { IoBed } from 'react-icons/io5';
-import { layerName, sourceName } from '../../../config/constants/constants';
-import useMapStore from '../store/useMapStore';
-import '../style/map.css';
+} from "@chakra-ui/react";
+import mapboxGl, { GeoJSONSource } from "mapbox-gl";
+import { useEffect, useRef } from "react";
+import ReactDOM from "react-dom/client";
+import { FaBath } from "react-icons/fa";
+import { IoBed } from "react-icons/io5";
+import { layerName, sourceName } from "../../../config/constants/constants";
+import useMapStore from "../store/useMapStore";
+import "../style/map.css";
+import formatCurrency from "../../../utils/formatCurrency";
 
 interface useOnLoadMapProps {
   data: any;
@@ -45,18 +46,18 @@ const useOnLoadMap = ({ data, lat, lng }: useOnLoadMapProps) => {
       return;
     }
 
-    map.on('load', () => {
+    map.on("load", () => {
       if (map.getSource(sourceName.resultProperty)) {
         map.removeLayer(layerName.polygonLayer);
         map.removeSource(sourceName.resultProperty);
       }
 
       map.addSource(sourceName.resultProperty, {
-        type: 'geojson',
+        type: "geojson",
         data:
           data === null
             ? {
-                type: 'FeatureCollection',
+                type: "FeatureCollection",
                 features: [],
               }
             : data,
@@ -64,29 +65,29 @@ const useOnLoadMap = ({ data, lat, lng }: useOnLoadMapProps) => {
 
       map.addLayer({
         id: layerName.polygonLayer,
-        type: 'fill',
+        type: "fill",
         source: sourceName.resultProperty, // reference the data source
         layout: {},
         paint: {
-          'fill-color': '#3182CE', // blue color fill
-          'fill-opacity': 0.5,
+          "fill-color": "#3182CE", // blue color fill
+          "fill-opacity": 0.5,
         },
       });
 
       const popup = new mapboxGl.Popup({
-        maxWidth: '400px',
+        maxWidth: "400px",
         closeButton: false,
       });
 
-      map.on('click', layerName.polygonLayer, (e) => {
-        containerPopupRef.current = document.createElement('div');
+      map.on("click", layerName.polygonLayer, (e) => {
+        containerPopupRef.current = document.createElement("div");
         const property = e.features![0].properties!;
         const images = JSON.parse(property.images);
 
         ReactDOM.createRoot(containerPopupRef.current).render(
           <ChakraProvider>
             <VStack
-              w={250}
+              w={270}
               rounded="lg"
               alignItems="flex-start"
               overflow="hidden"
@@ -98,11 +99,11 @@ const useOnLoadMap = ({ data, lat, lng }: useOnLoadMapProps) => {
                 alt="hehe"
                 w="full"
                 h={120}
-                objectFit={'cover'}
+                objectFit={"cover"}
               />
               <VStack w="full" alignItems="flex-start" p={4} h="full">
                 <Text bg="blue.50" py="1" px="2" color="blue.500" rounded="lg">
-                  {property.price}
+                  {formatCurrency(property.price)}
                 </Text>
                 <Box>
                   <Link

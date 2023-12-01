@@ -1,16 +1,18 @@
-import { SimpleGrid } from '@chakra-ui/react';
-import { FC } from 'react';
-import CardProperty from './CardProperty';
+import { SimpleGrid } from "@chakra-ui/react";
+import { FC } from "react";
+import CardProperty from "./CardProperty";
+import { Property } from "../../../types/propertyType";
 
 interface ListPropertyProps {
   hidden?: boolean;
+  data: Property[] | undefined;
 }
 
-const ListProperty: FC<ListPropertyProps> = ({ hidden = false }) => {
+const ListProperty: FC<ListPropertyProps> = ({ hidden = false, data }) => {
   return (
     <>
       <SimpleGrid
-        display={hidden ? 'none' : 'grid'}
+        display={hidden ? "none" : "grid"}
         minChildWidth="400px"
         p={10}
         gap="10"
@@ -18,15 +20,12 @@ const ListProperty: FC<ListPropertyProps> = ({ hidden = false }) => {
         overflowY="scroll"
         position="relative"
       >
-        <CardProperty />
-        <CardProperty />
-        <CardProperty />
-        <CardProperty />
-        <CardProperty />
-        <CardProperty />
-        <CardProperty />
-        <CardProperty />
-        <CardProperty />
+        {data?.map((property, index) => {
+          // Limit the number of cards to 10
+          if (index < 10) {
+            return <CardProperty key={property.id} data={property} />;
+          }
+        })}
       </SimpleGrid>
     </>
   );

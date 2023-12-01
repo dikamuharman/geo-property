@@ -1,6 +1,7 @@
-import { AxiosInstance } from 'axios';
-import axiosIntance from '../../../lib/axios';
-import { IGeojsonSearchResponse, ISearchResponse } from '../types/search-type';
+import { AxiosInstance } from "axios";
+import axiosIntance from "../../../lib/axios";
+import { ISearchResponse } from "../types/search-type";
+import { ResponseGeoJsonType } from "../types/responseGeoJsonType";
 
 class SearchService {
   axiosIntance: AxiosInstance;
@@ -17,8 +18,8 @@ class SearchService {
   }
   public async searchPropertyByLocation(
     location: number[]
-  ): Promise<IGeojsonSearchResponse> {
-    const response = await this.axiosIntance.post<IGeojsonSearchResponse>(
+  ): Promise<ResponseGeoJsonType> {
+    const response = await this.axiosIntance.post<ResponseGeoJsonType>(
       `/property/point`,
       {
         center_point: location,

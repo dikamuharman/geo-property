@@ -1,0 +1,43 @@
+name: Deploy Service
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: nerdvanahub/geoproperty-web:production
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Image Using ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            docker pull nerdvanahub/geoproperty-web:production
+            docker container stop geoproperty-api
+            docker rm geoproperty-api
+            docker run -d -p 5173:5173 --name geoproperty-api -e VITE_MAPBOX_KEY=${{ secrets.VITE_MAPBOX_KEY }} -e VITE_BASE_URL=${{ secrets.VITE_BASE_URL }} -e VITE_ENCRYPT_KEY=${{ secrets.VITE_ENCRYPT_KEY }} --restart always nerdvanahub/geoproperty-web:production

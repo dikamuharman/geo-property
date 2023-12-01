@@ -8,18 +8,19 @@ import {
   Heading,
   Input,
   VStack,
-} from '@chakra-ui/react';
-import { useMutation } from '@tanstack/react-query';
-import { GeoJSONSource } from 'mapbox-gl';
-import { FC, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
-import { CustomSelect } from '../../../components';
-import { layerName, sourceName } from '../../../config/constants/constants';
-import useMapStore from '../../map/store/useMapStore';
-import fieldContent from '../content/fieldContent.json';
-import searchService from '../service/searchService';
-import RadioInput from './RadioInput';
+} from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
+import { GeoJSONSource } from "mapbox-gl";
+import { FC, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { FaMapMarkerAlt, FaSearch } from "react-icons/fa";
+import { CustomSelect } from "../../../components";
+import { layerName, sourceName } from "../../../config/constants/constants";
+import useMapStore from "../../map/store/useMapStore";
+import fieldContent from "../content/fieldContent.json";
+import searchService from "../service/searchService";
+import RadioInput from "./RadioInput";
+import { Property } from "../../../types/propertyType";
 
 interface IFilterForm {
   address: string;
@@ -33,15 +34,17 @@ interface IFilterForm {
   kamarMandi: number;
 }
 
-interface FilterPropertyProps {}
+interface FilterPropertyProps {
+  setListProperty: React.Dispatch<React.SetStateAction<Property[] | undefined>>;
+}
 
-const FilterProperty: FC<FilterPropertyProps> = () => {
+const FilterProperty: FC<FilterPropertyProps> = ({ setListProperty }) => {
   const [resetRadio, setResetRadio] = useState<boolean | undefined>();
   const { handleSubmit, register, control, reset } = useForm<IFilterForm>({
     defaultValues: {
-      address: '',
-      tipeIklan: '',
-      tipeProperti: '',
+      address: "",
+      tipeIklan: "",
+      tipeProperti: "",
       luasBangunanMin: undefined,
       luasBangunanMax: undefined,
       luasTanahMin: undefined,
@@ -63,6 +66,46 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
       ) as GeoJSONSource;
       if (geoJsonSource) {
         geoJsonSource.setData(data as any);
+        const tmpData: Property[] = [];
+        data?.features.forEach((item) => {
+          tmpData.push({
+            id: item.properties.id,
+            uuid: item.properties.uuid,
+            user_id: item.properties.user_id,
+            images: item.properties.images,
+            title_ads: item.properties.title_ads,
+            type_ads: item.properties.type_ads,
+            type_property: item.properties.type_property,
+            address: item.properties.address,
+            condition: item.properties.condition,
+            description: item.properties.description,
+            price: item.properties.price,
+            rent_type: item.properties.rent_type,
+            building_type: item.properties.building_type,
+            surface_area: item.properties.surface_area,
+            building_area: item.properties.building_area,
+            bath_rooms: item.properties.bath_rooms,
+            bed_rooms: item.properties.bed_rooms,
+            floors: item.properties.floors,
+            park_area: item.properties.park_area,
+            furniture: item.properties.furniture,
+            electrical_power: item.properties.electrical_power,
+            oriented: item.properties.oriented,
+            certificate: item.properties.certificate,
+            facility_in_door: item.properties.facility_in_door,
+            facility_out_door: item.properties.facility_out_door,
+            full_name: item.properties.full_name,
+            email: item.properties.email,
+            phone_number: item.properties.phone_number,
+            center_point: item.properties.center_point,
+            kelurahan: item.properties.kelurahan,
+            kecamatan: item.properties.kecamatan,
+            city: item.properties.city,
+            geometry: item.properties.geometry,
+            user: item.properties.user,
+          });
+        });
+        setListProperty(tmpData);
         return;
       }
     },
@@ -72,30 +115,30 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
     if (!map) return;
 
     const operator = [
-      'all',
-      data.tipeIklan ? ['==', ['get', 'type_ads'], data.tipeIklan] : true,
+      "all",
+      data.tipeIklan ? ["==", ["get", "type_ads"], data.tipeIklan] : true,
       data.tipeProperti
-        ? ['==', ['get', 'type_property'], data.tipeProperti]
+        ? ["==", ["get", "type_property"], data.tipeProperti]
         : true,
-      String(data.luasBangunanMin) !== '' && String(data.luasBangunanMax) !== ''
+      String(data.luasBangunanMin) !== "" && String(data.luasBangunanMax) !== ""
         ? [
-            'all',
-            ['<=', ['get', 'building_area'], Number(data.luasBangunanMax)],
-            ['>=', ['get', 'building_area'], Number(data.luasBangunanMin)],
+            "all",
+            ["<=", ["get", "building_area"], Number(data.luasBangunanMax)],
+            [">=", ["get", "building_area"], Number(data.luasBangunanMin)],
           ]
         : true,
-      String(data.luasTanahMin) !== '' && String(data.luasTanahMax) !== ''
+      String(data.luasTanahMin) !== "" && String(data.luasTanahMax) !== ""
         ? [
-            'all',
-            ['<=', ['get', 'building_area'], Number(data.luasTanahMax)],
-            ['>=', ['get', 'building_area'], Number(data.luasTanahMin)],
+            "all",
+            ["<=", ["get", "building_area"], Number(data.luasTanahMax)],
+            [">=", ["get", "building_area"], Number(data.luasTanahMin)],
           ]
         : true,
       data.kamarTidur
-        ? ['>=', ['get', 'bed_rooms'], Number(data.kamarTidur)]
+        ? [">=", ["get", "bed_rooms"], Number(data.kamarTidur)]
         : true,
       data.kamarMandi
-        ? ['>=', ['get', 'bath_rooms'], Number(data.kamarMandi)]
+        ? [">=", ["get", "bath_rooms"], Number(data.kamarMandi)]
         : true,
     ];
 
@@ -115,9 +158,9 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
   const resetFilter = () => {
     if (!map) return;
     reset({
-      address: '',
-      tipeIklan: '',
-      tipeProperti: '',
+      address: "",
+      tipeIklan: "",
+      tipeProperti: "",
       luasBangunanMin: undefined,
       luasBangunanMax: undefined,
       luasTanahMin: undefined,
@@ -160,10 +203,10 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
       <CustomSelect
         options={[
           {
-            label: 'Pancoran mas, Depok',
-            value: 'Pancoran mas, Depok',
+            label: "Pancoran mas, Depok",
+            value: "Pancoran mas, Depok",
           },
-          { label: 'Beji, Depok', value: 'Beji, Depok' },
+          { label: "Beji, Depok", value: "Beji, Depok" },
         ]}
         placeholder="Masukan lokasi (Khusus daerah depok)"
         isClearable
@@ -212,15 +255,15 @@ const FilterProperty: FC<FilterPropertyProps> = () => {
       <FormControl>
         <FormLabel>Luas Bangunan (m2)</FormLabel>
         <HStack gap={4}>
-          <Input {...register('luasBangunanMin')} type="number" />
-          <Input {...register('luasBangunanMax')} type="number" />
+          <Input {...register("luasBangunanMin")} type="number" />
+          <Input {...register("luasBangunanMax")} type="number" />
         </HStack>
       </FormControl>
       <FormControl>
         <FormLabel>Luas Tanah (m2)</FormLabel>
         <HStack gap={4}>
-          <Input {...register('luasTanahMin')} type="number" />
-          <Input {...register('luasTanahMax')} type="number" />
+          <Input {...register("luasTanahMin")} type="number" />
+          <Input {...register("luasTanahMax")} type="number" />
         </HStack>
       </FormControl>
       <FormControl>

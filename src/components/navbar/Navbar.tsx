@@ -20,18 +20,18 @@ import {
   ModalOverlay,
   useBoolean,
   useDisclosure,
-} from '@chakra-ui/react';
-import React from 'react';
-import { FaChevronDown } from 'react-icons/fa';
-import { MdLogin } from 'react-icons/md';
-import { NavLink } from 'react-router-dom';
+} from "@chakra-ui/react";
+import React from "react";
+import { FaChevronDown } from "react-icons/fa";
+import { MdLogin } from "react-icons/md";
+import { NavLink } from "react-router-dom";
 import {
   LoginForm,
   RegisterForm,
-} from '../../features/authentication/component';
-import useRegisterStateStore from '../../features/authentication/store/useRegisterStateStore';
-import useUserStore from '../../features/authentication/store/useUserStore';
-import Logo from './Logo';
+} from "../../features/authentication/component";
+import useRegisterStateStore from "../../features/authentication/store/useRegisterStateStore";
+import useUserStore from "../../features/authentication/store/useUserStore";
+import Logo from "./Logo";
 
 interface NavbarProps {}
 
@@ -94,7 +94,7 @@ const Navbar: React.FC<NavbarProps> = () => {
             to="/add-property"
             bgGradient="linear(to-r, blue.500, blue.600)"
             _hover={{
-              bgGradient: 'linear(to-r, blue.600, blue.700)',
+              bgGradient: "linear(to-r, blue.600, blue.700)",
             }}
             color="white"
             size="lg"
@@ -113,7 +113,9 @@ const Navbar: React.FC<NavbarProps> = () => {
                 {username}
               </MenuButton>
               <MenuList>
-                <MenuItem>Informasi Akun</MenuItem>
+                <MenuItem as={NavLink} to={"/account/list-ads"}>
+                  Informasi Akun
+                </MenuItem>
                 <MenuItem onClick={setLogout}>Logout</MenuItem>
               </MenuList>
             </Menu>
