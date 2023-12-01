@@ -1,7 +1,7 @@
-import { Avatar, Button, Heading, Text, VStack } from '@chakra-ui/react';
-import { FC } from 'react';
-import { FaWhatsapp } from 'react-icons/fa';
-import useDetailStore from '../store/useDetailStore';
+import { Avatar, Button, Heading, Text, VStack } from "@chakra-ui/react";
+import { FC } from "react";
+import { FaWhatsapp } from "react-icons/fa";
+import useDetailStore from "../store/useDetailStore";
 
 interface DetailSellerProps {}
 
@@ -27,7 +27,7 @@ const DetailSeller: FC<DetailSellerProps> = () => {
           src={`https://assets-geoproperty.nerdvana-hub.com/foto/${image}`}
           size="2xl"
           borderWidth={4}
-          borderColor={'blue.500'}
+          borderColor={"blue.500"}
         />
         <VStack>
           <Heading as="h4" size="md">
@@ -41,6 +41,9 @@ const DetailSeller: FC<DetailSellerProps> = () => {
         leftIcon={<FaWhatsapp />}
         w="full"
         maxW="300"
+        as="a"
+        href="https://wa.me/62895611952367"
+        target="_blank"
       >
         Whatsapp Penjual
       </Button>
