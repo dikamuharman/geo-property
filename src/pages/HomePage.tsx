@@ -79,13 +79,7 @@ const HomePage: FC<HomePageProps> = () => {
               control={control}
               render={({ field }) => (
                 <CustomSelect
-                  options={[
-                    {
-                      label: "Pancoran mas, Depok",
-                      value: "Pancoran mas, Depok",
-                    },
-                    { label: "Beji, Depok", value: "Beji, Depok" },
-                  ]}
+                  options={[]}
                   placeholder="Masukan lokasi (Khusus daerah depok)"
                   onChange={(value) => {
                     field.onChange(value);

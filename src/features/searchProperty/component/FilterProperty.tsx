@@ -201,13 +201,7 @@ const FilterProperty: FC<FilterPropertyProps> = ({ setListProperty }) => {
         </Button>
       </HStack>
       <CustomSelect
-        options={[
-          {
-            label: "Pancoran mas, Depok",
-            value: "Pancoran mas, Depok",
-          },
-          { label: "Beji, Depok", value: "Beji, Depok" },
-        ]}
+        options={[]}
         placeholder="Masukan lokasi (Khusus daerah depok)"
         isClearable
         onChange={(value) => {
