@@ -23,4 +23,5 @@ jobs:
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
             pnpm install
+            pnpm run build
             systemctl restart geoproperty.service
