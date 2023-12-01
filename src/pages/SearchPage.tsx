@@ -53,7 +53,9 @@ const SearchPage: FC<SearchPageProps> = () => {
         >
           {toggleMap ? 'List Property' : 'Map Property'}
         </Button>
-        {toggleMap ? <Map /> : <ListProperty />}
+        <Map hidden={!toggleMap} />
+        <ListProperty hidden={toggleMap} />
+        {/* {toggleMap ? <Map /> : <ListProperty />} */}
       </GridItem>
     </Grid>
   );

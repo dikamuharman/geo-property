@@ -6,9 +6,11 @@ import useMapStore from '../store/useMapStore';
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_KEY as string;
 console.log(import.meta.env.MAPBOX_KEY);
 
-interface MapProps {}
+interface MapProps {
+  hidden?: boolean;
+}
 
-const Map: FC<MapProps> = () => {
+const Map: FC<MapProps> = ({ hidden = false }) => {
   // const mapContainer = useRef<HTMLDivElement | null>(null);
   const [setMapStore, center, zoom] = useMapStore((state) => [
     state.setMap,
@@ -44,7 +46,14 @@ const Map: FC<MapProps> = () => {
     [center, zoom]
   );
 
-  return <Box ref={mapWrapper} h="full" w="full" />;
+  return (
+    <Box
+      ref={mapWrapper}
+      h="full"
+      w="full"
+      display={hidden ? 'none' : 'block'}
+    />
+  );
 };
 
 export default Map;
