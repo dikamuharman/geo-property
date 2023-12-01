@@ -11,7 +11,8 @@ interface AddAboutPropertyProps {}
 const AddAboutProperty: React.FC<AddAboutPropertyProps> = () => {
   const [gray900] = useToken('colors', ['gray.900']);
   const [shadow] = useToken('shadows', ['md']);
-  const { errors, handleSubmit, onSubmit, control } = useAddAboutProperty();
+  const { errors, handleSubmit, onSubmit, control, watch } =
+    useAddAboutProperty();
 
   return (
     <VStack
@@ -128,6 +129,13 @@ const AddAboutProperty: React.FC<AddAboutPropertyProps> = () => {
         _hover={{ backgroundColor: gray900, shadow: shadow }}
         rightIcon={<FaChevronRight />}
         type="submit"
+        isDisabled={
+          watch('judulIklan') === '' ||
+          watch('tipeIklan') === '' ||
+          watch('kondisiProperti') === '' ||
+          watch('tipeProperti') === '' ||
+          watch('deskirpsi') === ''
+        }
       >
         Tahap selanjutnya
       </Button>

@@ -29,6 +29,7 @@ const useAddContactProperty = () => {
   const {
     handleSubmit,
     control,
+    watch,
     formState: { errors },
   } = useForm<TAddContactPropertyForm>({
     defaultValues: {
@@ -36,6 +37,7 @@ const useAddContactProperty = () => {
       nama: '',
       nomorHp: '',
     },
+    reValidateMode: 'onBlur',
   });
 
   const onSubmit = (data: TAddContactPropertyForm) => {
@@ -77,6 +79,7 @@ const useAddContactProperty = () => {
     control,
     errors,
     onSubmit,
+    watch,
   };
 };
 

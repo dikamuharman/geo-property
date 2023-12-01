@@ -12,6 +12,8 @@ const useAddAboutProperty = () => {
   const {
     handleSubmit,
     control,
+
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<TAddAboutPropertyForm>({
     defaultValues: {
@@ -36,6 +38,7 @@ const useAddAboutProperty = () => {
     errors,
     isSubmitting,
     onSubmit,
+    watch,
   };
 };
 

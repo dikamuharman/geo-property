@@ -21,7 +21,8 @@ interface AddRentHousePropertyProps {}
 const AddRentHouseProperty: React.FC<AddRentHousePropertyProps> = () => {
   const [gray900] = useToken('colors', ['gray.900']);
   const [shadow] = useToken('shadows', ['md']);
-  const { control, errors, handleSubmit, onSubmit } = useAddDetailProperty();
+  const { control, errors, handleSubmit, onSubmit, watch } =
+    useAddDetailProperty();
 
   return (
     <VStack w="full" alignItems="flex-start" gap={10}>
@@ -213,6 +214,20 @@ const AddRentHouseProperty: React.FC<AddRentHousePropertyProps> = () => {
             _hover={{ backgroundColor: gray900, shadow: shadow }}
             rightIcon={<FaChevronRight />}
             type="submit"
+            isDisabled={
+              watch('hargaSewa') === '' ||
+              watch('tipeSewa') === '' ||
+              watch('tipeRumah') === '' ||
+              watch('luasBangunan') === '' ||
+              watch('luasTanah') === '' ||
+              watch('kamarMandi') === '' ||
+              watch('kamarTidur') === '' ||
+              watch('jumlahLantai') === '' ||
+              watch('lahanParkir') === '' ||
+              watch('tipeParabot') === '' ||
+              watch('dayaListrik') === '' ||
+              watch('orientasiBangunan') === ''
+            }
           >
             Tahap selanjutnya
           </Button>

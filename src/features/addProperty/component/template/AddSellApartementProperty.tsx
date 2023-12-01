@@ -23,7 +23,8 @@ const AddSellApartementProperty: React.FC<
 > = () => {
   const [gray900] = useToken('colors', ['gray.900']);
   const [shadow] = useToken('shadows', ['md']);
-  const { control, errors, handleSubmit, onSubmit } = useAddDetailProperty();
+  const { control, errors, handleSubmit, onSubmit, watch } =
+    useAddDetailProperty();
 
   return (
     <VStack w="full" alignItems="flex-start" gap={10}>
@@ -164,6 +165,18 @@ const AddSellApartementProperty: React.FC<
             _hover={{ backgroundColor: gray900, shadow: shadow }}
             rightIcon={<FaChevronRight />}
             type="submit"
+            isDisabled={
+              watch('hargaJual') === '' ||
+              watch('tipeApartement') === '' ||
+              watch('luasBangunan') === '' ||
+              watch('kamarMandi') === '' ||
+              watch('kamarTidur') === '' ||
+              watch('jumlahLantai') === '' ||
+              watch('lahanParkir') === '' ||
+              watch('tipeParabot') === '' ||
+              watch('dayaListrik') === '' ||
+              watch('tipeSertifikat') === ''
+            }
           >
             Tahap selanjutnya
           </Button>

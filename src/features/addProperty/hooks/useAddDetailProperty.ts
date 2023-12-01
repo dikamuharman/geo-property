@@ -13,6 +13,7 @@ const useAddDetailProperty = () => {
   const {
     control,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<TAddPropertyForm>({
     defaultValues: {
@@ -43,6 +44,7 @@ const useAddDetailProperty = () => {
     control,
     handleSubmit,
     errors,
+    watch,
   };
 };
 

@@ -8,7 +8,7 @@ import useAddContactProperty from '../../hooks/useAddContactProperty';
 interface AddContactPropertyProps {}
 
 const AddContactProperty: React.FC<AddContactPropertyProps> = () => {
-  const { handleSubmit, onSubmit, control } = useAddContactProperty();
+  const { handleSubmit, onSubmit, control, watch } = useAddContactProperty();
   const [gray900] = useToken('colors', ['gray.900']);
   const [shadow] = useToken('shadows', ['md']);
 
@@ -24,16 +24,19 @@ const AddContactProperty: React.FC<AddContactPropertyProps> = () => {
         name="nama"
         control={control}
         rules={{ required: true }}
-        render={({ field, fieldState }) => (
-          <CustomTextField
-            type={'text'}
-            label={'Nama Lengkap'}
-            placeholder="Masukan nama lengkap"
-            name={field.name}
-            onChange={field.onChange}
-            isInvalid={fieldState.invalid}
-          />
-        )}
+        render={({ field, fieldState }) => {
+          return (
+            <CustomTextField
+              type={'text'}
+              label={'Nama Lengkap'}
+              placeholder="Masukan nama lengkap"
+              name={field.name}
+              onChange={field.onChange}
+              isInvalid={!fieldState.isDirty}
+              onBlur={field.onBlur}
+            />
+          );
+        }}
       />
       <Controller
         name="email"
@@ -78,6 +81,11 @@ const AddContactProperty: React.FC<AddContactPropertyProps> = () => {
         _hover={{ backgroundColor: gray900, shadow: shadow }}
         rightIcon={<FaChevronRight />}
         type="submit"
+        isDisabled={
+          watch('nama') === '' ||
+          watch('email') === '' ||
+          watch('nomorHp') === ''
+        }
       >
         Iklankan Properti
       </Button>

@@ -32,7 +32,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
     <AsyncSelect
       cacheOptions
       loadOptions={loadOptions}
-      defaultOptions
+      defaultOptions={options !== undefined ? options : []}
       size="lg"
       placeholder={placeholder}
       onChange={(valueOption) => onChange && onChange(valueOption?.value)}

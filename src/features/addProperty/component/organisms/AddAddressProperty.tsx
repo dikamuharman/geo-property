@@ -47,6 +47,7 @@ const AddAddressProperty: FC<AddAddressPropertyProps> = () => {
         _hover={{ backgroundColor: gray900, shadow: shadow }}
         rightIcon={<FaChevronRight />}
         onClick={onCLick}
+        isDisabled={centroid![0] === 0 || centroid![1] === 0 || adress === ''}
       >
         Tahap selanjutnya
       </Button>

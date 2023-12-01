@@ -23,7 +23,7 @@ import {
   FaTrash,
 } from 'react-icons/fa';
 import { IoClose } from 'react-icons/io5';
-import { useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import usePhotoStore from '../../store/usePhotosStore';
 
 interface AddImagePropertyProps {
@@ -33,7 +33,6 @@ interface AddImagePropertyProps {
 const AddImageProperty: React.FC<AddImagePropertyProps> = ({
   hiddenButton = false,
 }) => {
-  const navigate = useNavigate();
   const [images, setImages, removePhoto, resetPhoto] = usePhotoStore(
     (state) => [
       state.photos,
@@ -128,15 +127,13 @@ const AddImageProperty: React.FC<AddImagePropertyProps> = ({
       </Alert>
       {hiddenButton ? null : (
         <Button
+          as={RouterLink}
           bg="gray.800"
           color="white"
           _hover={{ backgroundColor: gray900, shadow: shadow }}
           rightIcon={<FaChevronRight />}
-          onClick={(e) => {
-            e.preventDefault();
-
-            navigate('/add-property/contact-property');
-          }}
+          isDisabled={images.length !== 5}
+          to="/add-property/contact-property"
         >
           Tahap selanjutnya
         </Button>

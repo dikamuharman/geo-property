@@ -9,13 +9,14 @@ import {
   InputGroup,
   InputRightElement,
 } from '@chakra-ui/react';
-import { FC, useState } from 'react';
+import { FC, FocusEventHandler, useState } from 'react';
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md';
 import { RiErrorWarningFill } from 'react-icons/ri';
 import { TBaseCustomInputType } from '../../types/customInputType';
 
 interface CustomTextFieldProps extends TBaseCustomInputType {
   type: 'text' | 'number' | 'password' | 'email' | 'tel' | 'url';
+  onBlur?: FocusEventHandler<HTMLInputElement>;
 }
 
 const CustomTextField: FC<CustomTextFieldProps> = ({
@@ -28,6 +29,7 @@ const CustomTextField: FC<CustomTextFieldProps> = ({
   errorMessage,
   isInvalid = false,
   type = 'text',
+  onBlur,
 }) => {
   const [show, setShow] = useState(false);
 
@@ -47,6 +49,7 @@ const CustomTextField: FC<CustomTextFieldProps> = ({
               onChange && onChange(e.target.value);
             }}
             value={value}
+            onBlur={onBlur}
           />
         ) : (
           <Input

@@ -23,7 +23,8 @@ const AddRentApartementProperty: React.FC<
 > = () => {
   const [gray900] = useToken('colors', ['gray.900']);
   const [shadow] = useToken('shadows', ['md']);
-  const { control, errors, handleSubmit, onSubmit } = useAddDetailProperty();
+  const { control, errors, handleSubmit, onSubmit, watch } =
+    useAddDetailProperty();
 
   return (
     <VStack w="full" alignItems="flex-start" gap={10}>
@@ -49,13 +50,13 @@ const AddRentApartementProperty: React.FC<
       >
         <GridItem colSpan={2}>
           <Controller
-            name="hargaJual"
+            name="hargaSewa"
             control={control}
             rules={{ required: true }}
             render={({ field, formState }) => (
               <CustomTextField
                 type={'text'}
-                label={'Harga Jual'}
+                label={'Harga Sewa'}
                 placeholder="Masukan nominal"
                 name={field.name}
                 onChange={field.onChange}
@@ -150,6 +151,18 @@ const AddRentApartementProperty: React.FC<
             _hover={{ backgroundColor: gray900, shadow: shadow }}
             rightIcon={<FaChevronRight />}
             type="submit"
+            isDisabled={
+              watch('hargaSewa') === '' ||
+              watch('tipeSewa') === '' ||
+              watch('tipeApartement') === '' ||
+              watch('luasBangunan') === '' ||
+              watch('kamarMandi') === '' ||
+              watch('kamarTidur') === '' ||
+              watch('jumlahLantai') === '' ||
+              watch('lahanParkir') === '' ||
+              watch('tipeParabot') === '' ||
+              watch('dayaListrik') === ''
+            }
           >
             Tahap selanjutnya
           </Button>
