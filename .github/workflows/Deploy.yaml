@@ -40,4 +40,4 @@ jobs:
             docker pull nerdvanahub/geoproperty-web:production
             docker container stop geoproperty-web
             docker rm geoproperty-web
-            docker run -d -p 5173:5173 --name geoproperty-web -e VITE_MAPBOX_KEY=${{ secrets.VITE_MAPBOX_KEY }} -e VITE_BASE_URL=${{ secrets.VITE_BASE_URL }} -e VITE_ENCRYPT_KEY=${{ secrets.VITE_ENCRYPT_KEY }} --restart always nerdvanahub/geoproperty-web:production
+            docker run -d -p 4173:4173 --name geoproperty-web -e VITE_MAPBOX_KEY=${{ secrets.VITE_MAPBOX_KEY }} -e VITE_BASE_URL=${{ secrets.VITE_BASE_URL }} -e VITE_ENCRYPT_KEY=${{ secrets.VITE_ENCRYPT_KEY }} --restart always nerdvanahub/geoproperty-web:production

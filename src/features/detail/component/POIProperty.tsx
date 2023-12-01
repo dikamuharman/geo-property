@@ -56,9 +56,10 @@ const ButtonAction = ({
 const POIProperty: React.FC<POIPropertyProps> = () => {
   const [map] = useMapStore((state) => [state.map]);
   const centroid = useDetailStore((state) => state.center_point);
-  const point = turf.point([centroid[0], centroid[1]]) as any;
-  const units: typeof TemplateUnits = "kilometers";
-  const buffer = turf.buffer(point, 2, { units } as typeof TemplateUnits);
+  const point = turf.featureCollection([
+    turf.point([centroid[0], centroid[1]]),
+  ]);
+  const buffer = turf.buffer(point, 2, { units: "kilometers" } as any);
   const polygon = useDetailStore((state) => state.geometry);
   const { data, isLoading } = usePoi();
   const iconPOI: any = {

@@ -8,6 +8,10 @@ RUN npm i pnpm -g
 
 RUN pnpm i
 
-EXPOSE 5173
+RUN pnpm run build
 
-CMD ["pnpm", "dev"]
+RUN pnpm run preview
+
+EXPOSE 4173
+
+CMD ["pnpm", "run", "preview"]
