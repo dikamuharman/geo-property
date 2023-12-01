@@ -25,7 +25,7 @@ const SearchPage: FC<SearchPageProps> = () => {
   useEffect(() => {
     setListProperty([]);
     const tmpData: Property[] = [];
-    data?.features.forEach((item) => {
+    data?.features?.forEach((item) => {
       tmpData.push({
         id: item.properties.id,
         uuid: item.properties.uuid,
