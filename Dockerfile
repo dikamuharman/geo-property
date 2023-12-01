@@ -1,4 +1,4 @@
-FROM node:lts-slim
+FROM node
 
 WORKDIR /app
 
@@ -12,4 +12,4 @@ RUN pnpm run build
 
 EXPOSE 4173
 
-CMD ["pnpm", "run", "preview"]
+CMD ["pnpm", "preview"]
