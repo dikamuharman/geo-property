@@ -7,7 +7,7 @@ interface HomeLayoutProps {}
 
 const HomeLayout: FC<HomeLayoutProps> = () => {
   return (
-    <Box bg="blue.600" w="100%" h="100vh">
+    <Box bg="blue.600" w="100%" h="100vh" position="relative">
       <Navbar />
       <Container maxW="full" h="full" maxH="calc(100vh - 88px)" p="10">
         <Outlet />

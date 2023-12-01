@@ -86,9 +86,6 @@ const Navbar: React.FC<NavbarProps> = () => {
             <Link color="gray.400" fontWeight="semibold">
               Disewa
             </Link>
-            <Link color="gray.400" fontWeight="semibold">
-              Tentang kami
-            </Link>
           </Flex>
         </Flex>
         <Flex gap="2">

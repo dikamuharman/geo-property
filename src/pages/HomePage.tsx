@@ -4,6 +4,7 @@ import {
   Flex,
   HStack,
   Heading,
+  Image,
   Stack,
   Text,
 } from '@chakra-ui/react';
@@ -11,6 +12,7 @@ import { FC } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import HeroImage from '../assets/hero-image.png';
 import CustomSelect from '../components/CustomSelect/CustomSelect';
 import searchService from '../features/searchProperty/service/searchService';
 
@@ -47,6 +49,13 @@ const HomePage: FC<HomePageProps> = () => {
   return (
     <Flex alignItems="center" h="100%">
       <Stack direction="column" gap="4">
+        <Image
+          src={HeroImage}
+          w={800}
+          position="absolute"
+          right={0}
+          bottom={0}
+        />
         <Box>
           <Heading
             size="4xl"
