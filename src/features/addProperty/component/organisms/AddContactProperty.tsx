@@ -1,4 +1,17 @@
-import { Button, Text, VStack, useToken } from '@chakra-ui/react';
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  VStack,
+  useDisclosure,
+  useToken,
+} from '@chakra-ui/react';
 import React from 'react';
 import { Controller } from 'react-hook-form';
 import { FaChevronRight } from 'react-icons/fa';
@@ -8,6 +21,7 @@ import useAddContactProperty from '../../hooks/useAddContactProperty';
 interface AddContactPropertyProps {}
 
 const AddContactProperty: React.FC<AddContactPropertyProps> = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { handleSubmit, onSubmit, control, watch } = useAddContactProperty();
   const [gray900] = useToken('colors', ['gray.900']);
   const [shadow] = useToken('shadows', ['md']);
@@ -76,19 +90,52 @@ const AddContactProperty: React.FC<AddContactPropertyProps> = () => {
         )}
       />
       <Button
+        onClick={onOpen}
         bg="gray.800"
         color="white"
         _hover={{ backgroundColor: gray900, shadow: shadow }}
         rightIcon={<FaChevronRight />}
-        type="submit"
         isDisabled={
           watch('nama') === '' ||
           watch('email') === '' ||
           watch('nomorHp') === ''
         }
       >
-        Iklankan Properti
+        Pasang iklan
       </Button>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Pasang Iklan</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>
+              Apakah anda yakin, data properti yang anda ingin iklan kan sudah
+              benar dan lengkap?
+            </Text>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="gray" mr={3} onClick={onClose}>
+              Batal
+            </Button>
+            <Button colorScheme="blue" type="submit">
+              Tambah Iklan
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      {/* <Button
+        bg="gray.800"
+        color="white"
+        _hover={{ backgroundColor: gray900, shadow: shadow }}
+        rightIcon={<FaChevronRight />}
+        type="submit"
+        
+      >
+        Iklankan Properti
+      </Button> */}
     </VStack>
   );
 };
