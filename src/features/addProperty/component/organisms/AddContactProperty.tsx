@@ -1,30 +1,16 @@
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Text,
-  VStack,
-  useDisclosure,
-  useToken,
-} from '@chakra-ui/react';
-import React from 'react';
-import { Controller } from 'react-hook-form';
-import { FaChevronRight } from 'react-icons/fa';
-import { CustomTextField } from '../../../../components';
-import useAddContactProperty from '../../hooks/useAddContactProperty';
+import { Button, Text, VStack, useToken } from "@chakra-ui/react";
+import React from "react";
+import { Controller } from "react-hook-form";
+import { FaChevronRight } from "react-icons/fa";
+import { CustomTextField } from "../../../../components";
+import useAddContactProperty from "../../hooks/useAddContactProperty";
 
 interface AddContactPropertyProps {}
 
 const AddContactProperty: React.FC<AddContactPropertyProps> = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const { handleSubmit, onSubmit, control, watch } = useAddContactProperty();
-  const [gray900] = useToken('colors', ['gray.900']);
-  const [shadow] = useToken('shadows', ['md']);
+  const { handleSubmit, onSubmit, control } = useAddContactProperty();
+  const [gray900] = useToken("colors", ["gray.900"]);
+  const [shadow] = useToken("shadows", ["md"]);
 
   return (
     <VStack
@@ -41,8 +27,8 @@ const AddContactProperty: React.FC<AddContactPropertyProps> = () => {
         render={({ field, fieldState }) => {
           return (
             <CustomTextField
-              type={'text'}
-              label={'Nama Lengkap'}
+              type={"text"}
+              label={"Nama Lengkap"}
               placeholder="Masukan nama lengkap"
               name={field.name}
               onChange={field.onChange}
@@ -58,8 +44,8 @@ const AddContactProperty: React.FC<AddContactPropertyProps> = () => {
         rules={{ required: true }}
         render={({ field, fieldState }) => (
           <CustomTextField
-            type={'text'}
-            label={'Email'}
+            type={"text"}
+            label={"Email"}
             placeholder="Masukan email"
             name={field.name}
             onChange={field.onChange}
@@ -73,10 +59,10 @@ const AddContactProperty: React.FC<AddContactPropertyProps> = () => {
         rules={{ required: true }}
         render={({ field, fieldState }) => (
           <CustomTextField
-            type={'text'}
+            type={"text"}
             label={
               <>
-                Nomor Handphone{' '}
+                Nomor Handphone{" "}
                 <Text color="gray.500" as="span">
                   (nomor whatsapp)
                 </Text>
@@ -89,7 +75,7 @@ const AddContactProperty: React.FC<AddContactPropertyProps> = () => {
           />
         )}
       />
-      <Button
+      {/* <Button
         onClick={onOpen}
         bg="gray.800"
         color="white"
@@ -102,9 +88,9 @@ const AddContactProperty: React.FC<AddContactPropertyProps> = () => {
         }
       >
         Pasang iklan
-      </Button>
+      </Button> */}
 
-      <Modal isOpen={isOpen} onClose={onClose}>
+      {/* <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Pasang Iklan</ModalHeader>
@@ -125,17 +111,16 @@ const AddContactProperty: React.FC<AddContactPropertyProps> = () => {
             </Button>
           </ModalFooter>
         </ModalContent>
-      </Modal>
-      {/* <Button
+      </Modal> */}
+      <Button
         bg="gray.800"
         color="white"
         _hover={{ backgroundColor: gray900, shadow: shadow }}
         rightIcon={<FaChevronRight />}
         type="submit"
-        
       >
         Iklankan Properti
-      </Button> */}
+      </Button>
     </VStack>
   );
 };

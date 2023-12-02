@@ -10,14 +10,15 @@ import {
   Text,
   VStack,
   useToken,
-} from '@chakra-ui/react';
-import { FC } from 'react';
-import { IconType } from 'react-icons';
-import { FaHome, FaImage, FaMapMarkerAlt, FaPhoneAlt } from 'react-icons/fa';
-import { MdAddHomeWork } from 'react-icons/md';
-import { RiErrorWarningFill } from 'react-icons/ri';
-import { NavLink, Outlet } from 'react-router-dom';
-import { Navbar } from '../components';
+} from "@chakra-ui/react";
+import { FC } from "react";
+import { IconType } from "react-icons";
+import { FaHome, FaImage, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
+import { MdAddHomeWork } from "react-icons/md";
+import { RiErrorWarningFill } from "react-icons/ri";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Navbar } from "../components";
+import useUserStore from "../features/authentication/store/useUserStore";
 
 interface AddPropertyLayoutProps {}
 
@@ -29,37 +30,46 @@ type AddPropertyLink = {
 
 const links: AddPropertyLink[] = [
   {
-    label: 'Informasi Properti',
-    to: '/add-property',
+    label: "Informasi Properti",
+    to: "/add-property",
     icon: FaMapMarkerAlt,
   },
   {
-    label: 'Informasi Umum Properti',
-    to: '/add-property/about-property',
+    label: "Informasi Umum Properti",
+    to: "/add-property/about-property",
     icon: RiErrorWarningFill,
   },
   {
-    label: 'informasi detail properti',
-    to: '/add-property/detail-property',
+    label: "informasi detail properti",
+    to: "/add-property/detail-property",
     icon: FaHome,
   },
   {
-    label: 'gambar properti',
-    to: '/add-property/image-property',
+    label: "gambar properti",
+    to: "/add-property/image-property",
     icon: FaImage,
   },
   {
-    label: 'kontak penjual',
-    to: '/add-property/contact-property',
+    label: "kontak penjual",
+    to: "/add-property/contact-property",
     icon: FaPhoneAlt,
   },
 ];
 
 const AddPropertyLayout: FC<AddPropertyLayoutProps> = () => {
-  const [blue500, blue600, blue50] = useToken('colors', [
-    'blue.500',
-    'blue.600',
-    'blue.50',
+  const userToken = useUserStore((state) => state.token);
+  const navigate = useNavigate();
+
+  // useEffect(() => {
+  if (userToken === "") {
+    navigate("/");
+  }
+  // }, []);
+
+  const [blue500, blue600, blue50] = useToken("colors", [
+    "blue.500",
+    "blue.600",
+    "blue.50",
   ]);
   return (
     <Box w="100%" h="100vh">
@@ -114,11 +124,11 @@ const AddPropertyLayout: FC<AddPropertyLayoutProps> = () => {
                   color="blue.500"
                   lineHeight="1.2"
                   cursor="pointer"
-                  _hover={{ textDecoration: 'none', backgroundColor: blue50 }}
+                  _hover={{ textDecoration: "none", backgroundColor: blue50 }}
                   _activeLink={{
-                    textDecoration: 'none',
+                    textDecoration: "none",
                     backgroundColor: blue500,
-                    color: 'white',
+                    color: "white",
                     _hover: { backgroundColor: blue600 },
                   }}
                   end

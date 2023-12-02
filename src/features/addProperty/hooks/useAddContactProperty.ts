@@ -1,16 +1,18 @@
-import { useMutation } from '@tanstack/react-query';
-import { useForm } from 'react-hook-form';
-import useUserStore from '../../authentication/store/useUserStore';
-import addPropertyService from '../services/addPropertyService';
-import useAddPropertyStore from '../store/useAddPropertyStore';
-import usePhotoStore from '../store/usePhotosStore';
-import { TAddContactPropertyForm } from '../types/addPropertyFormType';
-import { IAddPropertyFieldRequest } from '../types/addPropertyResponse';
+import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import useUserStore from "../../authentication/store/useUserStore";
+import addPropertyService from "../services/addPropertyService";
+import useAddPropertyStore from "../store/useAddPropertyStore";
+import usePhotoStore from "../store/usePhotosStore";
+import { TAddContactPropertyForm } from "../types/addPropertyFormType";
+import { IAddPropertyFieldRequest } from "../types/addPropertyResponse";
+import { useNavigate } from "react-router-dom";
 
 const useAddContactProperty = () => {
   const property = useAddPropertyStore((state) => state);
   const userId = useUserStore((state) => state.user.id);
   const images = usePhotoStore((state) => state.photos);
+  const navigate = useNavigate();
   const addPropertyMutation = useMutation({
     mutationFn: (
       data: IAddPropertyFieldRequest & {
@@ -33,11 +35,11 @@ const useAddContactProperty = () => {
     formState: { errors },
   } = useForm<TAddContactPropertyForm>({
     defaultValues: {
-      email: '',
-      nama: '',
-      nomorHp: '',
+      email: "",
+      nama: "",
+      nomorHp: "",
     },
-    reValidateMode: 'onBlur',
+    reValidateMode: "onBlur",
   });
 
   const onSubmit = (data: TAddContactPropertyForm) => {
@@ -52,7 +54,7 @@ const useAddContactProperty = () => {
       description: property.deskirpsi,
       electrical_power: parseInt(property.dayaListrik),
       geometry: property.geometry,
-      furniture: property.tipeParabot === 'tidak perabot' ? false : true,
+      furniture: property.tipeParabot === "tidak perabot" ? false : true,
       center_point: property.latLng,
       facility_out_door: property.fasilitaLuarProperty,
       facility_in_door: property.fasilitasProperty,
@@ -72,6 +74,8 @@ const useAddContactProperty = () => {
       email: data.email,
       phone_number: data.nomorHp,
     });
+
+    navigate(`/search?lat=${property.latLng[0]}&lng=${property.latLng[1]}`);
   };
 
   return {
