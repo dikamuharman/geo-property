@@ -219,7 +219,6 @@ const FilterProperty: FC<FilterPropertyProps> = ({ setListProperty }) => {
       setIsChecked(false);
       localStorage.setItem("isAiChecked", "");
     }
-    // console.log(isChecked);
   };
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -268,13 +267,14 @@ const FilterProperty: FC<FilterPropertyProps> = ({ setListProperty }) => {
               pointerEvents="none"
               children={<BsStars />}
               margin={1}
+              marginRight={-1}
             ></InputRightElement>
             <Input
-              placeholder="Carikan saya rumah menghadap utara dengan dibawah harga 150 juta"
+              placeholder="Carikan saya rumah harga 150 juta"
               onChange={setPromptAi as any}
               name="search_input"
               padding={6}
-              fontSize={["md", "lg"]}
+              fontSize={["md"]}
               value={prompt || ""}
             />
           </InputGroup>

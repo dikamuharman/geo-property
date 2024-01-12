@@ -69,6 +69,7 @@ const useOnLoadMap = ({ data, lat, lng }: useOnLoadMapProps) => {
     map.on("style.load", () => {
       if (map.getSource(sourceName.resultProperty)) {
         map.removeLayer(layerName.polygonLayer);
+        map.removeLayer("polygon-outline");
         map.removeSource(sourceName.resultProperty);
       }
 
@@ -166,8 +167,27 @@ const useOnLoadMap = ({ data, lat, lng }: useOnLoadMapProps) => {
         type: "fill",
         source: sourceName.resultProperty, // reference the data source
         paint: {
-          "fill-color": "#3182CE", // blue color fill
-          "fill-opacity": 0.5,
+          "fill-color": "gray", // blue color fill
+          "fill-opacity": 0.3,
+        },
+      });
+
+      map.addLayer({
+        id: "polygon-outline",
+        type: "line",
+        source: sourceName.resultProperty,
+        layout: {},
+        paint: {
+          "line-color": [
+            "match",
+            ["get", "type_property"],
+            "Rumah",
+            "#38A169",
+            "Apartemen",
+            "#DD6B20",
+            "#11b4da",
+          ],
+          "line-width": 4,
         },
       });
 
