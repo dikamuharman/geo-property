@@ -18,6 +18,7 @@ const SearchPage: FC<SearchPageProps> = () => {
   const [params] = useSearchParams();
   const lat = params.get("lat");
   const lng = params.get("lng");
+
   useOnLoadMap({ data, lat: lat!, lng: lng! });
 
   const [listProperty, setListProperty] = useState<Property[]>();

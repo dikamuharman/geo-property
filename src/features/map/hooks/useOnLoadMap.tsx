@@ -18,9 +18,11 @@ import { layerName, sourceName } from "../../../config/constants/constants";
 import useMapStore from "../store/useMapStore";
 import "../style/map.css";
 import formatCurrency from "../../../utils/formatCurrency";
+import * as turf from "@turf/turf";
+import { ResponseGeoJsonType } from "../../searchProperty/types/responseGeoJsonType";
 
 interface useOnLoadMapProps {
-  data: any;
+  data: ResponseGeoJsonType | undefined;
   lat: string;
   lng: string;
 }
@@ -29,13 +31,35 @@ const useOnLoadMap = ({ data, lat, lng }: useOnLoadMapProps) => {
   const containerPopupRef = useRef<HTMLElement | null>(null);
   const map = useMapStore((state) => state.map);
 
+  // Check Checkboxes AI
+  const isAiChecked = Boolean(localStorage.getItem("isAiChecked"));
+
+  // Setup Center Point
+  const points = data?.features?.map((item, index) => {
+    const point = turf.centroid(
+      turf.polygon(item.geometry.coordinates, { no: index })
+    );
+    point.properties = {
+      no: index,
+    };
+
+    return point;
+  });
+
+  console.log(points);
+
+  // Setup Bounding Box
+
+  // const multiPolygon = turf.multiPolygon(coordinates || [], {} as any);
+  // const bbox = turf.bboxPolygon(turf.bbox(multiPolygon));
+
   useEffect(() => {
     if (data === null) return;
     console.log(data);
     if (!map) return;
     map.flyTo({
       center: [Number(lat), Number(lng)],
-      zoom: 15,
+      zoom: isAiChecked ? 11 : 14,
     });
 
     const geoJsonSource = map.getSource(
@@ -50,7 +74,76 @@ const useOnLoadMap = ({ data, lat, lng }: useOnLoadMapProps) => {
       if (map.getSource(sourceName.resultProperty)) {
         map.removeLayer(layerName.polygonLayer);
         map.removeSource(sourceName.resultProperty);
+        map.removeLayer("clusters");
+        map.removeLayer("cluster-count");
+        map.removeLayer("unclustered-point");
+        map.removeSource("point_result");
       }
+
+      // if (isAiChecked) {
+      map.addSource("point_result", {
+        type: "geojson",
+        data: {
+          type: "FeatureCollection",
+          features: points,
+        } as any,
+        cluster: true,
+        clusterMaxZoom: 14,
+        clusterRadius: 50,
+      });
+
+      map.addLayer({
+        id: "clusters",
+        type: "circle",
+        source: "point_result",
+        filter: ["has", "point_count"],
+        paint: {
+          "circle-color": [
+            "step",
+            ["get", "point_count"],
+            "#51bbd6",
+            100,
+            "#f1f075",
+            750,
+            "#f28cb1",
+          ],
+          "circle-radius": [
+            "step",
+            ["get", "point_count"],
+            20,
+            100,
+            30,
+            750,
+            40,
+          ],
+        },
+      });
+
+      map.addLayer({
+        id: "cluster-count",
+        type: "symbol",
+        source: "point_result",
+        filter: ["has", "point_count"],
+        layout: {
+          "text-field": ["get", "point_count_abbreviated"],
+          "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+          "text-size": 12,
+        },
+      });
+
+      map.addLayer({
+        id: "unclustered-point",
+        type: "circle",
+        source: "point_result",
+        filter: ["!", ["has", "point_count"]],
+        paint: {
+          "circle-color": "#11b4da",
+          "circle-radius": 4,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#fff",
+        },
+      });
+      // }
 
       map.addSource(sourceName.resultProperty, {
         type: "geojson",
@@ -60,7 +153,7 @@ const useOnLoadMap = ({ data, lat, lng }: useOnLoadMapProps) => {
                 type: "FeatureCollection",
                 features: [],
               }
-            : data,
+            : (data as any),
       });
 
       map.addLayer({

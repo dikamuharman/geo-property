@@ -37,7 +37,7 @@ const SearchAddress: FC<SearchAddressProps> = () => {
     if (!map) return;
     map.flyTo({
       center: [data.value[0], data.value[1]!],
-      zoom: 14,
+      zoom: 12,
     });
   };
 
