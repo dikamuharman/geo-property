@@ -15,70 +15,70 @@ import ListAdsUserPropertyPage from '../../pages/ListAdsUserPropertyPage';
 import SearchPage from '../../pages/SearchPage';
 
 const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <HomeLayout />,
-    children: [
-      {
-        index: true,
-        element: <HomePage />,
-      },
-    ],
-  },
-  {
-    path: '/search',
-    element: <SearchLayout />,
-    children: [
-      {
-        index: true,
-        element: <SearchPage />,
-      },
-      {
-        path: 'detail/:id',
-        element: <DetailPage />,
-      },
-    ],
-  },
-  {
-    path: '/add-property',
-    element: <AddPropertyLayout />,
-    children: [
-      {
-        index: true,
-        element: <AddPropertyPage />,
-      },
-      {
-        path: 'about-property',
-        element: <AboutAddPropertyPage />,
-      },
-      {
-        path: 'detail-property',
-        element: <DetailAddPropertyPage />,
-      },
-      {
-        path: 'contact-property',
-        element: <AddContactProperty />,
-      },
-      {
-        path: 'image-property',
-        element: <AddImagePropertyPage />,
-      },
-    ],
-  },
-  {
-    path: '/account',
-    element: <AccountLayout />,
-    children: [
-      {
-        path: 'list-ads',
-        element: <ListAdsUserPropertyPage />,
-      },
-      {
-        path: 'list-ads/:id',
-        element: <EditAdsPropertyPage />,
-      },
-    ],
-  },
+    {
+        path: '/',
+        element: <HomeLayout />,
+        children: [
+            {
+                index: true,
+                element: <HomePage />,
+            },
+        ],
+    },
+    {
+        path: '/search',
+        element: <SearchLayout />,
+        children: [
+            {
+                index: true,
+                element: <SearchPage />,
+            },
+            {
+                path: 'detail/:id',
+                element: <DetailPage />,
+            },
+        ],
+    },
+    {
+        path: '/add-property',
+        element: <AddPropertyLayout />,
+        children: [
+            {
+                index: true,
+                element: <AddPropertyPage />,
+            },
+            {
+                path: 'about-property',
+                element: <AboutAddPropertyPage />,
+            },
+            {
+                path: 'detail-property',
+                element: <DetailAddPropertyPage />,
+            },
+            {
+                path: 'contact-property',
+                element: <AddContactProperty />,
+            },
+            {
+                path: 'image-property',
+                element: <AddImagePropertyPage />,
+            },
+        ],
+    },
+    {
+        path: '/account',
+        element: <AccountLayout />,
+        children: [
+            {
+                path: 'list-ads',
+                element: <ListAdsUserPropertyPage />,
+            },
+            {
+                path: 'list-ads/:id',
+                element: <EditAdsPropertyPage />,
+            },
+        ],
+    },
 ]);
 
 export default router;
