@@ -16,6 +16,16 @@ class SearchService {
 
     return response.data;
   }
+  public async searchPropertyByPrompt(prompt: string): Promise<ISearchResponse> {
+    const response = await this.axiosIntance.post<ISearchResponse>(
+      `/property/prompt`, 
+      {
+        prompt: prompt
+      }
+    );
+
+    return response.data;
+  }
   public async searchPropertyByLocation(
     location: number[]
   ): Promise<ResponseGeoJsonType> {
