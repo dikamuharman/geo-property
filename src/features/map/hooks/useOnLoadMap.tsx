@@ -45,7 +45,6 @@ const useOnLoadMap = ({ data, lat, lng }: useOnLoadMapProps) => {
     return point;
   });
   const pointsFeature = turf.featureCollection(points || []);
-  console.log("in use effect", pointsFeature);
 
   useEffect(() => {
     if (data === null) return;
@@ -58,23 +57,27 @@ const useOnLoadMap = ({ data, lat, lng }: useOnLoadMapProps) => {
     const geoJsonSource = map.getSource(
       sourceName.resultProperty
     ) as GeoJSONSource;
-    const clusterSource = map.getSource("point_data") as GeoJSONSource;
-    if (geoJsonSource || clusterSource) {
+    if (geoJsonSource) {
       geoJsonSource.setData(data as any);
+    }
+
+    const clusterSource = map.getSource("point_data") as GeoJSONSource;
+    if (clusterSource) {
       clusterSource.setData(pointsFeature as any);
-      return;
     }
 
     map.on("style.load", () => {
       if (map.getSource(sourceName.resultProperty)) {
         map.removeLayer(layerName.polygonLayer);
         map.removeSource(sourceName.resultProperty);
+      }
+
+      if (map.getSource("point_data")) {
         map.removeLayer("clusters");
         map.removeLayer("cluster-count");
         map.removeLayer("unclustered-point");
         map.removeSource("point_data");
       }
-
       if (isAiChecked) {
         // add the point_count property to your source data.
         map.addSource("point_data", {
