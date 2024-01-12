@@ -36,26 +36,19 @@ const useOnLoadMap = ({ data, lat, lng }: useOnLoadMapProps) => {
 
   // Setup Center Point
   const points = data?.features?.map((item, index) => {
-    const point = turf.centroid(
-      turf.polygon(item.geometry.coordinates, { no: index })
-    );
+    const polygon = turf.polygon(item.geometry.coordinates);
+    const point = turf.center(polygon as any);
     point.properties = {
-      no: index,
+      no: index + 1,
     };
 
     return point;
   });
-
-  console.log(points);
-
-  // Setup Bounding Box
-
-  // const multiPolygon = turf.multiPolygon(coordinates || [], {} as any);
-  // const bbox = turf.bboxPolygon(turf.bbox(multiPolygon));
+  const pointsFeature = turf.featureCollection(points || []);
+  console.log("in use effect", pointsFeature);
 
   useEffect(() => {
     if (data === null) return;
-    console.log(data);
     if (!map) return;
     map.flyTo({
       center: [Number(lat), Number(lng)],
@@ -65,85 +58,94 @@ const useOnLoadMap = ({ data, lat, lng }: useOnLoadMapProps) => {
     const geoJsonSource = map.getSource(
       sourceName.resultProperty
     ) as GeoJSONSource;
-    if (geoJsonSource) {
+    const clusterSource = map.getSource("point_data") as GeoJSONSource;
+    if (geoJsonSource || clusterSource) {
       geoJsonSource.setData(data as any);
+      clusterSource.setData(pointsFeature as any);
       return;
     }
 
-    map.on("load", () => {
+    map.on("style.load", () => {
       if (map.getSource(sourceName.resultProperty)) {
         map.removeLayer(layerName.polygonLayer);
         map.removeSource(sourceName.resultProperty);
         map.removeLayer("clusters");
         map.removeLayer("cluster-count");
         map.removeLayer("unclustered-point");
-        map.removeSource("point_result");
+        map.removeSource("point_data");
       }
 
-      // if (isAiChecked) {
-      map.addSource("point_result", {
-        type: "geojson",
-        data: {
-          type: "FeatureCollection",
-          features: points,
-        } as any,
-        cluster: true,
-        clusterMaxZoom: 14,
-        clusterRadius: 50,
-      });
+      if (isAiChecked) {
+        // add the point_count property to your source data.
+        map.addSource("point_data", {
+          type: "geojson",
+          data:
+            pointsFeature === null
+              ? { type: "FeatureCollection", features: [] }
+              : pointsFeature,
+          cluster: true,
+          clusterMaxZoom: 14,
+          clusterRadius: 50,
+        });
 
-      map.addLayer({
-        id: "clusters",
-        type: "circle",
-        source: "point_result",
-        filter: ["has", "point_count"],
-        paint: {
-          "circle-color": [
-            "step",
-            ["get", "point_count"],
-            "#51bbd6",
-            100,
-            "#f1f075",
-            750,
-            "#f28cb1",
-          ],
-          "circle-radius": [
-            "step",
-            ["get", "point_count"],
-            20,
-            100,
-            30,
-            750,
-            40,
-          ],
-        },
-      });
+        map.addLayer({
+          id: "clusters",
+          type: "circle",
+          source: "point_data",
+          filter: ["has", "point_count"],
+          paint: {
+            "circle-color": [
+              "step",
+              ["get", "point_count"],
+              "#51bbd6",
+              100,
+              "#f1f075",
+              750,
+              "#f28cb1",
+            ],
+            "circle-radius": [
+              "step",
+              ["get", "point_count"],
+              20,
+              100,
+              30,
+              750,
+              40,
+            ],
+          },
+          layout: {
+            visibility: "visible",
+          },
+        });
 
-      map.addLayer({
-        id: "cluster-count",
-        type: "symbol",
-        source: "point_result",
-        filter: ["has", "point_count"],
-        layout: {
-          "text-field": ["get", "point_count_abbreviated"],
-          "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-          "text-size": 12,
-        },
-      });
+        map.addLayer({
+          id: "cluster-count",
+          type: "symbol",
+          source: "point_data",
+          filter: ["has", "point_count"],
+          layout: {
+            "text-field": ["get", "point_count_abbreviated"],
+            "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+            "text-size": 12,
+          },
+        });
 
-      map.addLayer({
-        id: "unclustered-point",
-        type: "circle",
-        source: "point_result",
-        filter: ["!", ["has", "point_count"]],
-        paint: {
-          "circle-color": "#11b4da",
-          "circle-radius": 4,
-          "circle-stroke-width": 1,
-          "circle-stroke-color": "#fff",
-        },
-      });
-      // }
+        map.addLayer({
+          id: "unclustered-point",
+          type: "circle",
+          source: "point_data",
+          filter: ["!", ["has", "point_count"]],
+          paint: {
+            "circle-color": "#11b4da",
+            "circle-radius": 4,
+            "circle-stroke-width": 1,
+            "circle-stroke-color": "#fff",
+          },
+          layout: {
+            visibility: "none",
+          },
+        });
+      }
 
       map.addSource(sourceName.resultProperty, {
         type: "geojson",
@@ -160,7 +162,6 @@ const useOnLoadMap = ({ data, lat, lng }: useOnLoadMapProps) => {
         id: layerName.polygonLayer,
         type: "fill",
         source: sourceName.resultProperty, // reference the data source
-        layout: {},
         paint: {
           "fill-color": "#3182CE", // blue color fill
           "fill-opacity": 0.5,
@@ -238,7 +239,7 @@ const useOnLoadMap = ({ data, lat, lng }: useOnLoadMapProps) => {
           .addTo(map);
       });
     });
-  }, [data, lat, lng, map]);
+  }, [data, pointsFeature, lat, lng, map, isAiChecked]);
 };
 
 export default useOnLoadMap;
