@@ -29,7 +29,7 @@ const AdsCardProperty: React.FC<AdsCardPropertyProps> = ({ data }) => {
       overflow={"hidden"}
     >
       <Image
-        src={`https://assets-geoproperty.nerdvana-hub.com/foto/${data.images[0].image}`}
+        src={`https://storage-geoproperty.nerdvana-hub.com/assets/geoproperty/${data.images[0].image}`}
         alt="ads"
         w={"60%"}
         objectFit="cover"

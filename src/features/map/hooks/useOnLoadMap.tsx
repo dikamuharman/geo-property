@@ -212,7 +212,7 @@ const useOnLoadMap = ({ data, lat, lng }: useOnLoadMapProps) => {
               bg="white"
             >
               <Image
-                src={`https://assets-geoproperty.nerdvana-hub.com/foto/${images[0]
+                src={`https://storage-geoproperty.nerdvana-hub.com/assets/geoproperty/${images[0]
                   .image!}`}
                 alt="hehe"
                 w="full"
