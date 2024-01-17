@@ -1,4 +1,4 @@
-FROM node
+FROM node AS builder
 
 WORKDIR /app
 
@@ -10,6 +10,8 @@ RUN pnpm i
 
 RUN pnpm run build
 
-EXPOSE 4173
+FROM httpd AS server
 
-CMD ["pnpm", "preview"]
+COPY --from=builder /app/dist /usr/local/apache2/htdocs/
+
+EXPOSE 80

@@ -160,6 +160,9 @@ const FilterProperty: FC<FilterPropertyProps> = ({ setListProperty }) => {
     ];
 
     map.setFilter(layerName.polygonLayer, operator);
+    map.setFilter("polygon-outline", operator);
+    map.setFilter("clusters", operator);
+    map.setFilter("cluster-count", operator);
   };
 
   const onChange = (coordinate: string | number[] | undefined) => {

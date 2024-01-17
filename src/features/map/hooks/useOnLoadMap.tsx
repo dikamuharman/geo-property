@@ -39,13 +39,14 @@ const useOnLoadMap = ({ data, lat, lng }: useOnLoadMapProps) => {
     const polygon = turf.polygon(item.geometry.coordinates);
     const point = turf.center(polygon as any);
     point.properties = {
+      ...item.properties,
       no: index + 1,
     };
 
     return point;
   });
   const pointsFeature = turf.featureCollection(points || []);
-
+  console.log(pointsFeature);
   useEffect(() => {
     if (data === null) return;
     if (!map) return;
