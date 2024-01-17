@@ -40,4 +40,4 @@ jobs:
             docker pull asnurramdhani12/geoproperty-fe:production
             docker container stop geoproperty-fe
             docker rm geoproperty-fe
-            docker run -d -p 4173:4173 --name geoproperty-fe --restart always asnurramdhani12/geoproperty-fe:production
+            docker run -d -p 81:80 --name geoproperty-fe --restart always asnurramdhani12/geoproperty-fe:production
