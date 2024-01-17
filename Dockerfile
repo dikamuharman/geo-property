@@ -16,7 +16,7 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 
 COPY --from=builder /app/dist/nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY --from=builder /app/dist/.htaccess /usr/share/nginx/html/.htaccess
+COPY --from=builder /app/dist/htaccess_config /usr/share/nginx/html/.htaccess
 
 EXPOSE 80
 
