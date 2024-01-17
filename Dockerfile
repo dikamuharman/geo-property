@@ -10,6 +10,14 @@ RUN pnpm i
 
 RUN pnpm run build
 
-EXPOSE 4173
+FROM nginx:alpine AS server
 
-CMD [ "pnpm", "preview" ]
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY .htaccess /usr/share/nginx/html/.htaccess
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
